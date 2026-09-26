@@ -93,3 +93,22 @@ iframe { width: 100%; height: 100%; border: 1px solid var(--line); border-radius
   .form { overflow: visible; }
   .preview { order: -1; position: sticky; top: 0; z-index: 2; background: var(--bg); height: 55vh; }
 }
+
+/* ------------------------------------------------------------ guardar y publicar */
+.actions .primary { position: relative; }
+.dirty { position: absolute; top: -4px; right: -4px; width: 11px; height: 11px; border-radius: 50%; background: #f5d06b; border: 2px solid var(--panel); }
+.actions button:disabled { opacity: 0.6; cursor: progress; }
+.publish-status { font-size: 12.5px; color: var(--muted); background: var(--field); border: 1px solid var(--line); border-radius: 10px; padding: 9px 12px; }
+.publish-status.ok { color: #86efac; border-color: #14532d; background: #0b1f14; }
+.publish-status.err { color: #fca5a5; border-color: #7f1d1d; background: #1f0b0b; }
+.publish-status a { color: inherit; }
+.gh-dialog { width: min(560px, calc(100vw - 32px)); max-height: calc(100vh - 32px); overflow: auto; padding: 22px; border: 1px solid var(--line); border-radius: 16px; background: var(--panel); color: var(--text); }
+.gh-dialog::backdrop { background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(4px); }
+.gh-dialog h2 { margin: 0 0 8px; font-size: 18px; }
+.gh-dialog p, .gh-dialog ol { margin: 0 0 12px; color: var(--muted); font-size: 13.5px; }
+.gh-dialog ol { padding-left: 20px; display: grid; gap: 4px; }
+.gh-dialog a { color: var(--accent); }
+.gh-dialog form { display: grid; gap: 12px; }
+.gh-dialog input[type="text"], .gh-dialog input[type="password"] { width: 100%; padding: 9px 11px; border-radius: 9px; border: 1px solid var(--line); background: var(--field); outline: none; }
+.gh-dialog input:focus { border-color: var(--accent); }
+.gh-note { font-size: 12px !important; }
