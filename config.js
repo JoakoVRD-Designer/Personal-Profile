@@ -18,7 +18,7 @@ window.PROFILE = {
   profile: {
     username: "joakovrd",
     displayName: "JoakoVRD",
-    avatar: "https://github.com/JoakoVRD-Designer.png",
+    avatar: "https://github.com/JoakoVRD-Designer.png", // también sirve un GIF o un video .mp4
     bio: ["designer ✦ creator", "bienvenido a mi perfil", "hecho a mano, sin pagar nada :)"],
     bioEffect: "typewriter",
     location: "",
@@ -33,8 +33,8 @@ window.PROFILE = {
   },
 
   background: {
-    // Para video: type: "video", url: "assets/media/background.mp4"
-    // Para imagen/GIF: type: "image", url: "assets/media/background.gif"
+    // Foto, GIF o video:  type: "media", url: "assets/media/fondo.mp4"  (o .gif / .jpg)
+    // Varios que se turnan: type: "slideshow", slides: [{ url: "assets/media/1.jpg" }, { url: "assets/media/2.gif" }]
     type: "gradient",
     gradient: ["#0f0c29", "#302b63", "#24243e"],
     overlay: 0.3,

@@ -13,6 +13,17 @@
   let state;
   try { state = JSON.parse(localStorage.getItem(STORE) || "null"); } catch (e) { state = null; }
   state = window.deepMerge(window.PROFILE_DEFAULTS, state || window.PROFILE || {});
+  const normalize = () => {
+    // "video" e "image" son los nombres antiguos del tipo "media".
+    if (state.background.type === "video" || state.background.type === "image") state.background.type = "media";
+  };
+  normalize();
+  const iconName = (k) => {
+    const key = String(k || "").toLowerCase().trim();
+    const icon = window.PROFILE_ICONS[(window.PROFILE_ICON_ALIASES || {})[key] || key];
+    return icon ? icon.t : k;
+  };
+  const ICON_OPTIONS = ICON_KEYS.map((k) => [k, window.PROFILE_ICONS[k].t]);
 
   const get = (obj, path) => path.split(".").reduce((o, k) => (o == null ? o : o[k]), obj);
   const set = (obj, path, v) => {
@@ -29,7 +40,7 @@
     { title: "👤 Perfil", open: true, fields: [
       { p: "profile.username", label: "Usuario", type: "text" },
       { p: "profile.displayName", label: "Nombre visible", type: "text", hint: "Si lo dejas vacío se usa el usuario." },
-      { p: "profile.avatar", label: "Avatar", type: "media", accept: "image/*" },
+      { p: "profile.avatar", label: "Avatar / logo (foto, GIF o video)", type: "media", accept: "image/*,video/*", hint: "Acepta .jpg, .png, .webp, .gif animado, .mp4 o .webm." },
       { p: "profile.avatarDecoration", label: "Decoración del avatar (PNG/GIF transparente)", type: "media", accept: "image/*" },
       { p: "profile.avatarShape", label: "Forma del avatar", type: "select", options: opt(["circle", "Círculo"], ["rounded", "Redondeado"], ["square", "Cuadrado"]) },
       { p: "profile.avatarAnimation", label: "Animación del avatar", type: "select", options: opt(["ring", "Anillo giratorio"], ["pulse", "Pulso"], ["float", "Flotar"], ["none", "Ninguna"]) },
@@ -38,8 +49,15 @@
       { p: "profile.location", label: "Ubicación", type: "text" },
     ] },
     { title: "🖼️ Fondo", fields: [
-      { p: "background.type", label: "Tipo de fondo", type: "select", options: opt(["gradient", "Degradado"], ["video", "Video"], ["image", "Imagen / GIF"], ["color", "Color sólido"]) },
-      { p: "background.url", label: "Archivo de video / imagen", type: "media", accept: "video/*,image/*", hint: "Para tipo Video o Imagen." },
+      { p: "background.type", label: "Tipo de fondo", type: "select", options: opt(["gradient", "Degradado"], ["media", "Foto, GIF o video"], ["slideshow", "Presentación (varias fotos / GIF / videos)"], ["color", "Color sólido"]) },
+      { p: "background.url", label: "Foto, GIF o video de fondo", type: "media", accept: "image/*,video/*", hint: "Para el tipo “Foto, GIF o video”." },
+      { p: "background.mobileUrl", label: "Fondo solo para celular (opcional)", type: "media", accept: "image/*,video/*", hint: "Ideal para un video o foto vertical." },
+      { p: "background.slides", label: "Presentación", type: "list", add: "Añadir foto / GIF / video", item: (x) => (x.url || "Nuevo").split("/").pop(), fields: [
+        { p: "url", label: "Archivo", type: "media", accept: "image/*,video/*" },
+      ], blank: { url: "" } },
+      { p: "background.interval", label: "Segundos entre cada uno", type: "range", min: 2, max: 30, step: 1 },
+      { p: "background.shuffle", label: "Orden aleatorio", type: "check" },
+      { p: "background.kenBurns", label: "Zoom lento en las fotos", type: "check" },
       { p: "background.gradient", label: "Colores del degradado", type: "colors" },
       { p: "background.animatedGradient", label: "Degradado animado", type: "check" },
       { p: "background.color", label: "Color sólido", type: "color" },
@@ -120,12 +138,12 @@
       { p: "audio.loop", label: "Repetir lista", type: "check" },
     ] },
     { title: "🔗 Redes sociales", fields: [
-      { p: "links", label: "", type: "list", add: "Añadir red social", item: (l) => (window.PROFILE_ICONS[l.platform] || {}).t || l.platform || "Enlace", fields: [
-        { p: "platform", label: "Plataforma", type: "select", options: ICON_KEYS.map((k) => [k, window.PROFILE_ICONS[k].t]) },
+      { p: "links", label: "", type: "list", add: "Añadir red social", item: (l) => iconName(l.platform) || "Enlace", fields: [
+        { p: "platform", label: `Plataforma (${ICON_KEYS.length}+ con ícono, o escribe cualquier nombre)`, type: "text", list: ICON_OPTIONS, hint: "Escribe para buscar: instagram, kick, spotify, onlyfans, roblox… Si tu red no está, pon su nombre y sube un ícono abajo." },
         { p: "url", label: "URL (o texto para copiar, ej. tu usuario de Discord)", type: "text" },
         { p: "label", label: "Texto al pasar el mouse (opcional)", type: "text" },
         { p: "copy", label: "Copiar al portapapeles en vez de abrir", type: "check" },
-        { p: "icon", label: "Ícono propio (opcional)", type: "media", accept: "image/*" },
+        { p: "icon", label: "Ícono propio (PNG, SVG o GIF, opcional)", type: "media", accept: "image/*" },
       ], blank: { platform: "instagram", url: "" } },
     ] },
     { title: "🧷 Botones destacados", fields: [
@@ -155,7 +173,7 @@
       { p: "meta.title", label: "Título de la pestaña", type: "text" },
       { p: "meta.titleAnimation", label: "Animación del título", type: "select", options: opt(["typewriter", "Máquina de escribir"], ["scroll", "Desplazamiento"], ["none", "Ninguna"]) },
       { p: "meta.description", label: "Descripción (para previsualizaciones al compartir)", type: "text" },
-      { p: "meta.favicon", label: "Favicon (vacío = avatar)", type: "media", accept: "image/*" },
+      { p: "meta.favicon", label: "Ícono de la pestaña (PNG, ICO o GIF; vacío = avatar)", type: "media", accept: "image/*,.ico" },
       { p: "enter.enabled", label: "Pantalla “click to enter”", type: "check", hint: "Necesaria para que la música suene sola al entrar." },
       { p: "enter.text", label: "Texto de entrada", type: "text" },
     ] },
@@ -213,7 +231,7 @@
       b.append(t.name);
       b.onclick = () => {
         // Un tema solo cambia colores y efectos; tus datos, fondo de video/imagen y enlaces se mantienen.
-        const keepBg = state.background.type === "video" || state.background.type === "image";
+        const keepBg = state.background.type === "media" || state.background.type === "slideshow";
         const cfg = JSON.parse(JSON.stringify(t.cfg));
         if (keepBg) delete cfg.background.type;
         state = window.deepMerge(state, cfg);
@@ -380,7 +398,7 @@
         if (def.list) {
           const dl = document.createElement("datalist");
           dl.id = id + "-list";
-          def.list.forEach((x) => dl.appendChild(new Option(x)));
+          def.list.forEach((x) => dl.appendChild(Array.isArray(x) ? new Option(x[1], x[0]) : new Option(x)));
           wrap.appendChild(dl);
           input.setAttribute("list", dl.id);
         }
@@ -450,7 +468,15 @@
       s.textContent = sec.title;
       const body = document.createElement("div");
       body.className = "fields";
-      for (const f of sec.fields) body.appendChild(f.type === "list" ? list(f) : field(f, state, save));
+      for (const f of sec.fields) {
+        if (f.type === "list" && f.label) {
+          const t = document.createElement("span");
+          t.className = "list-label";
+          t.textContent = f.label;
+          body.appendChild(t);
+        }
+        body.appendChild(f.type === "list" ? list(f) : field(f, state, save));
+      }
       d.append(s, body);
       form.appendChild(d);
     });
@@ -506,6 +532,7 @@
       else { const w = {}; new Function("window", text)(w); data = w.PROFILE; }
       if (!data || typeof data !== "object") throw new Error();
       state = window.deepMerge(window.PROFILE_DEFAULTS, data);
+      normalize();
       render();
       save();
       toast("Configuración importada");
@@ -517,6 +544,7 @@
   $("reset").onclick = () => {
     if (!confirm("¿Descartar los cambios del editor y volver a config.js?")) return;
     state = window.deepMerge(window.PROFILE_DEFAULTS, window.PROFILE || {});
+    normalize();
     render();
     save();
   };

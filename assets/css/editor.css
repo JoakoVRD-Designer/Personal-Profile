@@ -59,6 +59,7 @@ input[type="color"] { width: 42px; height: 36px; padding: 2px; border-radius: 9p
 .theme { display: inline-flex; align-items: center; gap: 7px; padding: 6px 11px 6px 7px; border-radius: 999px; border: 1px solid var(--line); background: var(--field); cursor: pointer; font-size: 13px; transition: border-color 0.2s, transform 0.2s; }
 .theme:hover { border-color: var(--a); transform: translateY(-1px); }
 .theme .sw { width: 16px; height: 16px; border-radius: 50%; background: linear-gradient(135deg, var(--a), var(--b)); }
+.list-label { font-size: 12px; color: var(--muted); margin-bottom: -6px; }
 .add { border: 1px dashed var(--line); background: none; border-radius: 12px; padding: 10px; cursor: pointer; color: var(--muted); }
 .add:hover { border-color: var(--accent); color: var(--text); }
 

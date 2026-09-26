@@ -76,8 +76,22 @@
   }
 
   /** Icono: nombre de la lista (discord, github…), URL de imagen o emoji. */
+  const iconKey = (name) => {
+    const k = String(name || "").toLowerCase().trim();
+    return (window.PROFILE_ICON_ALIASES || {})[k] || k;
+  };
+  const isVideo = (url) => /\.(mp4|webm|mov|m4v|ogv)(\?|#|$)/i.test(String(url || ""));
+  /** Crea un <video> silencioso en bucle (para fondos y avatares animados). */
+  function mutedVideo(url, cls) {
+    const v = el("video", cls);
+    Object.assign(v, { src: src(url), loop: true, muted: true, autoplay: true, playsInline: true, preload: "auto" });
+    v.setAttribute("playsinline", "");
+    v.setAttribute("muted", "");
+    return v;
+  }
+
   function icon(name, { brand = false, fallback = "link" } = {}) {
-    const key = String(name || "").toLowerCase().trim();
+    const key = iconKey(name);
     const data = ICONS[key] || (!/[./]/.test(key) && !/\p{Extended_Pictographic}/u.test(key) ? ICONS[fallback] : null);
     if (data) {
       const i = el("i", "si");
@@ -145,24 +159,50 @@
   setMeta('meta[name="description"]', desc);
   setMeta('meta[property="og:title"]', title);
   setMeta('meta[property="og:description"]', desc);
-  setMeta('meta[property="og:image"]', src(P.avatar));
+  if (!isVideo(P.avatar)) setMeta('meta[property="og:image"]', src(P.avatar));
   setMeta('meta[name="theme-color"]', A.accentColor);
-  if (cfg.meta.favicon || P.avatar) $("favicon").href = src(cfg.meta.favicon || P.avatar);
+  const fav = cfg.meta.favicon || (isVideo(P.avatar) ? "" : P.avatar);
+  if (fav) $("favicon").href = src(fav);
 
   /* --------------------------------------------------------------------- fondo */
   const bg = $("bg");
   let bgVideo = null;
-  if (B.type === "video" && B.url) {
-    bgVideo = el("video");
-    Object.assign(bgVideo, { src: src(B.url), autoplay: true, loop: true, muted: true, playsInline: true });
-    bgVideo.setAttribute("playsinline", "");
-    bgVideo.setAttribute("muted", "");
-    bg.appendChild(bgVideo);
-  } else if (B.type === "image" && B.url) {
-    const img = el("img");
-    img.src = src(B.url);
-    img.alt = "";
-    bg.appendChild(img);
+  // Foto, GIF o video (uno solo, con versión opcional para móvil) o presentación de varios.
+  let slides = [];
+  if (B.type === "media" || B.type === "video" || B.type === "image") {
+    const u = (innerWidth < 768 && B.mobileUrl) || B.url;
+    if (u) slides = [u];
+  } else if (B.type === "slideshow") {
+    slides = (B.slides || []).map((x) => (typeof x === "string" ? x : x && x.url)).filter(Boolean);
+    if (B.shuffle) slides.sort(() => Math.random() - 0.5);
+  }
+  const layers = slides.map((u) => {
+    const layer = el("div", "slide");
+    if (isVideo(u)) layer.appendChild(mutedVideo(u));
+    else { const img = el("img"); img.src = src(u); img.alt = ""; img.decoding = "async"; layer.appendChild(img); }
+    bg.appendChild(layer);
+    return layer;
+  });
+  let slide = 0;
+  function showSlide(i) {
+    layers.forEach((l, k) => {
+      const on = k === i, m = l.firstChild;
+      l.classList.toggle("on", on);
+      if (m.tagName === "VIDEO") { if (on) { if (layers.length > 1) m.currentTime = 0; m.play().catch(() => {}); } else m.pause(); }
+      else if (on) { m.style.animation = "none"; void m.offsetWidth; m.style.animation = ""; } // reinicia el zoom lento
+    });
+  }
+  if (layers.length) {
+    bg.classList.toggle("kenburns", !!B.kenBurns);
+    if (layers.length === 1 && layers[0].firstChild.tagName === "VIDEO") bgVideo = layers[0].firstChild;
+    showSlide(0);
+    if (layers.length > 1) {
+      setInterval(() => {
+        if (document.hidden) return;
+        slide = (slide + 1) % layers.length;
+        showSlide(slide);
+      }, Math.max(2, Number(B.interval) || 8) * 1000);
+    }
   } else if (B.type === "color") {
     bg.style.background = B.color;
   } else {
@@ -175,11 +215,20 @@
   document.body.style.background = B.type === "color" ? B.color : "#07060b";
 
   /* ---------------------------------------------------------------- avatar/nombre */
-  const avatar = $("avatar");
+  const avatarImg = $("avatar");
+  let avatar = avatarImg;
+  // Avatar en video (mp4/webm); los GIF y fotos funcionan directamente como imagen.
+  if (isVideo(P.avatar) && !cfg.discord.useDiscordAvatar) {
+    const v = mutedVideo(P.avatar, "avatar");
+    avatar.replaceWith(v);
+    avatar = v;
+  }
   const fallbackAvatar = () => initialsAvatar((P.displayName || P.username).toUpperCase());
-  avatar.addEventListener("error", () => { if (!avatar.src.startsWith("data:")) avatar.src = fallbackAvatar(); });
-  if (P.avatar) avatar.src = src(P.avatar);
+  avatarImg.addEventListener("error", () => { if (!avatarImg.src.startsWith("data:")) avatarImg.src = fallbackAvatar(); });
+  if (avatar !== avatarImg) avatar.addEventListener("error", () => { avatar.replaceWith(avatarImg); avatar = avatarImg; avatarImg.src = fallbackAvatar(); });
+  if (P.avatar) { if (avatar.tagName === "IMG") avatar.src = src(P.avatar); }
   else $("avatar-wrap").hidden = true;
+  if (avatar.tagName !== "IMG") avatar.setAttribute("aria-label", "Avatar de " + (P.displayName || P.username));
   avatar.alt = "Avatar de " + (P.displayName || P.username);
   $("avatar-wrap").classList.add("avatar-" + P.avatarShape, "avatar-anim-" + (P.avatarAnimation || "none"));
   if (P.avatarDecoration) { $("avatar-deco").src = src(P.avatarDecoration); $("avatar-deco").hidden = false; }
@@ -273,7 +322,7 @@
   links.classList.toggle("icon-colorhover", !!A.iconColorOnHover);
   links.classList.add("icon-style-" + A.iconStyle, "icon-anim-" + A.iconAnimation, "icon-hover-" + A.iconHover);
   cfg.links.forEach((l, i) => {
-    const platform = String(l.platform || "link").toLowerCase();
+    const platform = iconKey(l.platform || "link");
     const isUrl = /^(https?:|mailto:|tel:)/i.test(l.url || "") || /^[\w-]+(\.[\w-]+)+\//.test(l.url || "");
     const copy = l.copy || !isUrl;
     const node = copy ? el("button", "link") : el("a", "link");
@@ -286,7 +335,7 @@
       node.target = "_blank";
       node.rel = "noopener noreferrer";
     }
-    const label = l.label || (ICONS[platform] ? ICONS[platform].t : platform);
+    const label = l.label || (ICONS[platform] ? ICONS[platform].t : l.platform || "Enlace");
     node.setAttribute("aria-label", label);
     node.append(icon(l.icon || platform, { brand: !A.monochromeIcons }), el("span", "tip", label));
     ripple(node);
@@ -516,10 +565,8 @@
     if (typed) FX.typewriter(bio, lines);
     if (A.usernameEffect === "sparkle") FX.sparkleText(name);
     if (tracks.length) playAudio();
-    if (bgVideo) {
-      if (soundFromVideo) applyVolume();
-      bgVideo.play().catch(() => {});
-    }
+    if (soundFromVideo) applyVolume();
+    if (layers.length) showSlide(slide);
   }
 
   const enter = $("enter");
