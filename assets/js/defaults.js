@@ -29,7 +29,8 @@ window.PROFILE_DEFAULTS = {
 
   appearance: {
     layout: "card", // card | minimal
-    font: "Poppins", // cualquier fuente de Google Fonts
+    style: "vivid", // vivid (brillos y color) | clean (sobrio, sin brillos)
+    font: "Poppins", // cualquier fuente de Google Fonts, o "system" (San Francisco en Apple, Segoe en Windows)
     accentColor: "#a855f7",
     secondaryColor: "#ec4899",
     textColor: "#ffffff",

@@ -71,7 +71,8 @@
   /** Avatar de respaldo con la inicial, por si la imagen no carga. */
   function initialsAvatar(text) {
     const ch = ([...text][0] || "?").replace(/[<>&'"]/g, "?");
-    const svg = `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='${A.accentColor}'/><stop offset='1' stop-color='${A.secondaryColor}'/></linearGradient></defs><rect width='100' height='100' fill='url(#g)'/><text x='50' y='50' dy='.35em' text-anchor='middle' font-family='sans-serif' font-weight='700' font-size='46' fill='white'>${ch}</text></svg>`;
+    const clean = A.style === "clean";
+    const svg = `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='${clean ? "#3a3a3c" : A.accentColor}'/><stop offset='1' stop-color='${clean ? "#1c1c1e" : A.secondaryColor}'/></linearGradient></defs><rect width='100' height='100' fill='url(#g)'/><text x='50' y='50' dy='.35em' text-anchor='middle' font-family='-apple-system, Helvetica, sans-serif' font-weight='600' font-size='44' fill='${clean ? "#f5f5f7" : "white"}'>${ch}</text></svg>`;
     return "data:image/svg+xml," + encodeURIComponent(svg);
   }
 
@@ -131,7 +132,10 @@
     const n = parseInt(h.length === 3 ? h.split("").map((c) => c + c).join("") : h, 16) || 0;
     root.setProperty("--card-bg", `rgba(${(n >> 16) & 255},${(n >> 8) & 255},${n & 255},${A.cardOpacity})`);
   }
-  if (A.font) {
+  document.documentElement.classList.add("style-" + (A.style || "vivid"));
+  if (String(A.font).toLowerCase() === "system") {
+    root.setProperty("--font", '-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", "Segoe UI", Roboto, sans-serif');
+  } else if (A.font) {
     const fam = encodeURIComponent(A.font).replace(/%20/g, "+");
     for (const q of ["", ":wght@600;700"]) {
       const l = document.createElement("link");
@@ -227,7 +231,7 @@
   avatarImg.addEventListener("error", () => { if (!avatarImg.src.startsWith("data:")) avatarImg.src = fallbackAvatar(); });
   if (avatar !== avatarImg) avatar.addEventListener("error", () => { avatar.replaceWith(avatarImg); avatar = avatarImg; avatarImg.src = fallbackAvatar(); });
   if (P.avatar) { if (avatar.tagName === "IMG") avatar.src = src(P.avatar); }
-  else $("avatar-wrap").hidden = true;
+  else avatar.src = fallbackAvatar();
   if (avatar.tagName !== "IMG") avatar.setAttribute("aria-label", "Avatar de " + (P.displayName || P.username));
   avatar.alt = "Avatar de " + (P.displayName || P.username);
   $("avatar-wrap").classList.add("avatar-" + P.avatarShape, "avatar-anim-" + (P.avatarAnimation || "none"));
