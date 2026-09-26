@@ -9,7 +9,8 @@
   <link rel="stylesheet" href="assets/css/editor.css" />
   <script src="assets/js/defaults.js"></script>
   <script src="assets/js/icons.js"></script>
-  <script src="config.js"></script>
+  <!-- config.js sin caché: los cambios guardados se ven apenas GitHub Pages publica -->
+  <script>document.write('<script src="config.js?v=' + Date.now() + '"><\/script>');</script>
 </head>
 <body>
   <aside class="side">
@@ -24,8 +25,11 @@
 
     <footer class="side-foot">
       <div id="files" class="files" hidden></div>
+      <div id="publish-status" class="publish-status" hidden></div>
       <div class="actions">
-        <button id="download" type="button" class="primary">Descargar config.js</button>
+        <button id="publish" type="button" class="primary" title="Guarda en GitHub y publica tu perfil (Ctrl+S)">💾 Guardar y publicar<span id="dirty" class="dirty" hidden aria-label="cambios sin guardar"></span></button>
+        <button id="gh-settings" type="button" title="Conexión con GitHub" aria-label="Conexión con GitHub">⚙</button>
+        <button id="download" type="button">Descargar config.js</button>
         <button id="copy" type="button">Copiar</button>
         <label class="btn-like">Importar<input id="import" type="file" accept=".js,.json" hidden /></label>
         <button id="reset" type="button" class="ghost" title="Descarta los cambios del editor y vuelve a config.js">Restablecer</button>
@@ -44,7 +48,35 @@
     <div class="frame-wrap"><iframe id="frame" title="Vista previa del perfil" src="index.html?preview=1"></iframe></div>
   </main>
 
+  <dialog id="gh-dialog" class="gh-dialog">
+    <form method="dialog" id="gh-form">
+      <h2>Conectar con GitHub</h2>
+      <p>Para guardar directamente, el editor necesita un <strong>token personal</strong> de tu cuenta de GitHub. Se crea una sola vez:</p>
+      <ol>
+        <li>Abre <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">github.com/settings/personal-access-tokens/new</a></li>
+        <li><em>Token name</em>: "Editor de perfil". <em>Expiration</em>: la que quieras (puede ser sin vencimiento).</li>
+        <li><em>Repository access</em> → <strong>Only select repositories</strong> → elige este repositorio.</li>
+        <li><em>Permissions</em> → <em>Repository permissions</em> → <strong>Contents: Read and write</strong>.</li>
+        <li>Pulsa <strong>Generate token</strong>, cópialo y pégalo aquí abajo.</li>
+      </ol>
+      <div class="grid2">
+        <label class="field"><span>Usuario de GitHub</span><input id="gh-owner" type="text" required /></label>
+        <label class="field"><span>Repositorio</span><input id="gh-repo" type="text" required /></label>
+      </div>
+      <label class="field"><span>Rama publicada (la de GitHub Pages)</span><input id="gh-branch" type="text" required /></label>
+      <label class="field"><span>Token</span><input id="gh-token" type="password" placeholder="github_pat_…" autocomplete="off" required /></label>
+      <label class="check"><input id="gh-remember" type="checkbox" checked /> Recordar en este navegador <small>— no lo marques en computadoras compartidas</small></label>
+      <p class="gh-note">El token solo se guarda en tu navegador y solo se envía a api.github.com. Nunca se sube al repositorio.</p>
+      <div class="actions">
+        <button type="submit" value="ok" class="primary">Guardar conexión</button>
+        <button type="button" id="gh-forget" class="ghost">Olvidar token</button>
+        <button type="submit" value="cancel" formnovalidate>Cancelar</button>
+      </div>
+    </form>
+  </dialog>
+
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script src="assets/js/publish.js"></script>
   <script src="assets/js/editor.js"></script>
 </body>
 </html>
