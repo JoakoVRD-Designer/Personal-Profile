@@ -5,111 +5,78 @@
    ========================================================================= */
 window.PROFILE = {
   meta: {
-    title: "@joakovrd · dev",
-    titleAnimation: "typewriter",
-    description: "JoakoVRD — developer & designer. Proyectos, stack y contacto.",
+    title: "JoakoVRD",
+    titleAnimation: "none",
+    description: "JoakoVRD — Developer & Designer.",
   },
 
   enter: {
-    enabled: true,
-    text: "> click to enter_",
+    enabled: false,
   },
 
   profile: {
     username: "joakovrd",
     displayName: "JoakoVRD",
-    avatar: "https://github.com/JoakoVRD-Designer.png",
-    avatarAnimation: "ring",
-    bioPrefix: "> ",
-    bio: ["developer & designer", "construyendo cosas para la web", "open source ✦ siempre aprendiendo"],
-    bioEffect: "typewriter",
+    avatar: "", // sube tu foto desde el editor (vacío = tu inicial)
+    avatarAnimation: "none",
+    bio: ["Developer & Designer."],
+    bioEffect: "static",
     location: "",
   },
 
   appearance: {
-    layout: "card",
-    font: "JetBrains Mono",
-    accentColor: "#22d3ee",
-    secondaryColor: "#a78bfa",
-    textColor: "#e6edf3",
-    iconColor: "#e6edf3",
-    cardColor: "#0b1017",
-    cardOpacity: 0.6,
-    cardBlur: 14,
-    cardBorderStyle: "animated",
-    usernameEffect: "shimmer",
-    usernameGlow: true,
-    monochromeIcons: true,
-    iconColorOnHover: true,
-    iconStyle: "glass",
+    style: "clean",
+    layout: "minimal",
+    font: "system",
+    accentColor: "#f5f5f7",
+    secondaryColor: "#86868b",
+    textColor: "#f5f5f7",
+    bioColor: "#86868b",
+    iconColor: "#86868b",
+    iconSize: 26,
+    iconStyle: "plain",
     iconAnimation: "none",
     iconHover: "lift",
-    tilt: true,
-    tiltStrength: 6,
+    iconGlow: false,
+    monochromeIcons: true,
+    iconColorOnHover: false,
+    usernameEffect: "none",
+    usernameGlow: false,
+    cardBorder: false,
+    cardGlow: false,
+    tilt: false,
+    shareButton: false,
+    entranceAnimation: "fade-up",
   },
 
   background: {
-    type: "gradient",
-    gradient: ["#05070a", "#0b1220", "#05070a"],
-    overlay: 0.2,
+    type: "color",
+    color: "#000000",
+    overlay: 0,
+    parallax: false,
   },
 
   effects: {
-    particles: "matrix",
-    particleColor: "#22d3ee",
-    particleCount: 60,
-    cursorTrail: "trail",
-    clickEffect: "ripple",
+    particles: "none",
+    cursorTrail: "none",
+    clickEffect: "none",
   },
 
   audio: {
-    // { title: "Nombre", artist: "Artista", url: "assets/media/cancion.mp3" }
     tracks: [],
-    volume: 0.4,
   },
 
   discord: {
-    // Tu ID de usuario de Discord + unirte a https://discord.gg/lanyard para mostrar tu estado en vivo.
     userId: "",
   },
 
   views: {
-    enabled: true,
-    namespace: "joakovrd-profile",
-  },
-
-  badges: [
-    { name: "Developer", icon: "💻", color: "#22d3ee" },
-    { name: "Designer", icon: "🎨", color: "#a78bfa" },
-    { name: "Open Source", icon: "github", color: "#e6edf3" },
-  ],
-
-  // Añade o quita tecnologías desde el editor (sección "Desarrollador").
-  stackTitle: "Stack",
-  stack: [
-    { name: "HTML", icon: "html5" },
-    { name: "CSS", icon: "css" },
-    { name: "JavaScript", icon: "javascript" },
-    { name: "Git", icon: "git" },
-    { name: "GitHub", icon: "github" },
-  ],
-
-  github: {
-    username: "JoakoVRD-Designer",
-    title: "Proyectos",
-    stats: true,
-    repos: 4,
-    sort: "updated",
+    enabled: false,
   },
 
   links: [
-    { platform: "github", url: "https://github.com/JoakoVRD-Designer" },
     { platform: "discord", url: "joakovrd", copy: true, label: "Copiar usuario de Discord" },
     { platform: "instagram", url: "https://instagram.com/" },
     { platform: "tiktok", url: "https://tiktok.com/" },
-  ],
-
-  buttons: [
-    { title: "Código de este perfil", subtitle: "Hecho desde cero con HTML, CSS y JavaScript", url: "https://github.com/JoakoVRD-Designer/Personal-Profile", icon: "github" },
   ],
 };

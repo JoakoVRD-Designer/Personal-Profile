@@ -487,3 +487,22 @@ i.si { display: block; width: 30px; height: 30px; background: var(--c, var(--ico
 .repo-foot svg { width: 13px; height: 13px; fill: currentColor; }
 .lang::before { content: ""; width: 9px; height: 9px; border-radius: 50%; background: var(--lang); }
 .stagger .chip, .stagger .repo { animation: pop-in 0.55s cubic-bezier(.34, 1.56, .64, 1) backwards; animation-delay: calc(0.35s + var(--i, 0) * 0.06s); }
+
+/* ======================================================= estilo "clean" (sobrio) */
+.style-clean .avatar { border: 0; box-shadow: none; }
+.style-clean .name { font-weight: 600; letter-spacing: -0.03em; }
+.style-clean .bio { letter-spacing: -0.01em; }
+.style-clean .badge { background: rgba(255, 255, 255, 0.06); border-color: var(--line); }
+.style-clean .badge:hover { box-shadow: none; }
+.style-clean .badge-anim-shine .badge::before { display: none; }
+.style-clean .link, .style-clean .link:hover { background: none; border-color: transparent; box-shadow: none; }
+.style-clean .links i.si { filter: none; transition: background 0.3s ease, transform 0.3s ease; }
+.style-clean .links .link:hover i.si, .style-clean .links .link:focus-visible i.si { background: var(--text); filter: none; }
+.style-clean .icon-hover-lift .link:hover, .style-clean .icon-hover-lift .link:focus-visible { transform: translateY(-2px); }
+.style-clean .ripple { display: none; }
+.style-clean .tip { background: rgba(40, 40, 42, 0.95); font-size: 12px; border-radius: 7px; }
+.style-clean .btn, .style-clean .chip, .style-clean .repo { background: rgba(255, 255, 255, 0.05); border-color: var(--line); box-shadow: none; }
+.style-clean .enter { background: #000; backdrop-filter: none; }
+.style-clean .enter-text { text-shadow: none; letter-spacing: 0; }
+.style-clean .links { margin-top: 26px; gap: 18px; }
+.style-clean .name { margin-top: 4px; }

@@ -35,7 +35,7 @@
 
   /* ------------------------------------------------------------------- esquema */
   const opt = (...xs) => xs.map((x) => (Array.isArray(x) ? x : [x, x]));
-  const FONTS = ["Poppins", "Inter", "Montserrat", "Outfit", "Space Grotesk", "Sora", "Lexend", "Rubik", "Nunito", "Quicksand", "Comfortaa", "Orbitron", "Audiowide", "Press Start 2P", "VT323", "Silkscreen", "JetBrains Mono", "Fira Code", "Pacifico", "Dancing Script", "Satisfy", "Caveat", "Bebas Neue", "Anton", "Righteous", "Permanent Marker", "Playfair Display", "Cinzel", "UnifrakturMaguntia"];
+  const FONTS = ["system", "Poppins", "Inter", "Montserrat", "Outfit", "Space Grotesk", "Sora", "Lexend", "Rubik", "Nunito", "Quicksand", "Comfortaa", "Orbitron", "Audiowide", "Press Start 2P", "VT323", "Silkscreen", "JetBrains Mono", "Fira Code", "Pacifico", "Dancing Script", "Satisfy", "Caveat", "Bebas Neue", "Anton", "Righteous", "Permanent Marker", "Playfair Display", "Cinzel", "UnifrakturMaguntia"];
 
   const SECTIONS = [
     { title: "👤 Perfil", open: true, fields: [
@@ -70,7 +70,8 @@
     ] },
     { title: "🎨 Apariencia", fields: [
       { p: "appearance.layout", label: "Diseño", type: "select", options: opt(["card", "Tarjeta"], ["minimal", "Minimal (sin tarjeta)"]) },
-      { p: "appearance.font", label: "Fuente (Google Fonts)", type: "text", list: FONTS, hint: "Cualquier nombre de fonts.google.com" },
+      { p: "appearance.style", label: "Estilo", type: "select", options: opt(["vivid", "Vivo (brillos y color)"], ["clean", "Sobrio (sin brillos)"]) },
+      { p: "appearance.font", label: "Fuente", type: "text", list: FONTS, hint: "“system” usa la fuente del dispositivo (San Francisco en iPhone/Mac). O cualquier nombre de fonts.google.com." },
       { row: [
         { p: "appearance.accentColor", label: "Acento", type: "color" },
         { p: "appearance.secondaryColor", label: "Secundario", type: "color" },
@@ -197,6 +198,11 @@
 
   /* ---------------------------------------------------------------- temas rápidos */
   const THEMES = [
+    { name: "Simple", sw: ["#f5f5f7", "#1d1d1f"], cfg: {
+      appearance: { style: "clean", layout: "minimal", font: "system", accentColor: "#f5f5f7", secondaryColor: "#86868b", textColor: "#f5f5f7", bioColor: "#86868b", iconColor: "#86868b", usernameEffect: "none", usernameGlow: false, iconStyle: "plain", iconAnimation: "none", iconHover: "lift", iconGlow: false, monochromeIcons: true, iconColorOnHover: false, cardGlow: false, cardBorder: false, tilt: false, badgeAnimation: "none", buttonAnimation: "none", shareButton: false },
+      profile: { avatarAnimation: "none", bioPrefix: "", bioEffect: "static" },
+      background: { type: "color", color: "#000000", parallax: false },
+      effects: { particles: "none", cursorTrail: "none", clickEffect: "none" } } },
     { name: "Developer", sw: ["#22d3ee", "#a78bfa"], cfg: {
       appearance: { accentColor: "#22d3ee", secondaryColor: "#a78bfa", textColor: "#e6edf3", font: "JetBrains Mono", layout: "card", usernameEffect: "shimmer", usernameGlow: true, iconStyle: "glass", iconAnimation: "none", iconHover: "lift", monochromeIcons: true, iconColor: "#e6edf3", iconColorOnHover: true, cardColor: "#0b1017", cardOpacity: 0.6, cardBorderStyle: "animated", badgeAnimation: "shine" },
       profile: { avatarAnimation: "ring", bioPrefix: "> " },
