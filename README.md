@@ -1,0 +1,73 @@
+# ✦ Personal Profile
+
+Página de perfil al estilo **guns.lol**, con **todas las funciones premium gratis**, sin anuncios ni marcas de agua, y 100 % tuya: es un sitio estático (HTML + CSS + JS, sin compilar nada) que puedes publicar gratis en GitHub Pages.
+
+## Funciones
+
+| | |
+|---|---|
+| 🚪 Pantalla “click to enter” | Texto personalizable; permite que la música suene al entrar |
+| 🖼️ Fondo | Video, imagen/GIF, degradado animado o color; oscurecido y desenfoque |
+| 🎵 Música | **Varias canciones**, reproductor con portada, barra de progreso, anterior/siguiente, aleatorio, repetir y control de volumen (recuerda tu volumen) |
+| ✨ Efectos del nombre | Destellos, arcoíris, degradado, brillo que pasa, glitch, glow |
+| ⌨️ Bio | Efecto máquina de escribir con varias frases que rotan |
+| 🖱️ Cursor | Cursor personalizado + rastros: destellos, estela, luz, burbujas, emoji. Efecto al hacer clic |
+| 🌌 Partículas | Estrellas (con estrellas fugaces), nieve, lluvia, luciérnagas, corazones, sakura, burbujas, confeti |
+| 🪟 Tarjeta | Opacidad, desenfoque, color, bordes, brillo, **inclinación 3D**, diseño tarjeta o minimal |
+| 🔤 Fuentes | Cualquier fuente de Google Fonts |
+| 🏅 Insignias | Ilimitadas y personalizadas (emoji, ícono o imagen) con tooltip |
+| 🔗 Redes | 45+ íconos incluidos, colores de marca o monocromo, brillo; copiar al portapapeles (ej. usuario de Discord) |
+| 🧷 Botones | Enlaces grandes estilo Linktree con título, subtítulo e ícono |
+| 🟣 Discord en vivo | Estado, juego, Spotify con barra de progreso y avatar (vía [Lanyard](https://github.com/Phineas/lanyard)) |
+| 👁️ Visitas | Contador de visitas gratuito |
+| 🏷️ Pestaña | Título animado (máquina de escribir o desplazamiento), favicon, vista previa al compartir |
+| 🛠️ Editor visual | `editor.html`: edita todo con vista previa en vivo y descarga tu `config.js` |
+
+## Cómo personalizarlo
+
+**Opción A — Editor visual:** abre `editor.html` (en tu sitio publicado o en local), cambia lo que quieras y pulsa **Descargar config.js**. Reemplaza el `config.js` del repositorio por el descargado.
+Si en el editor usas “Subir” para un archivo, recuerda copiar ese archivo a `assets/media/` (el editor te muestra la lista).
+
+**Opción B — A mano:** edita `config.js`. Todas las opciones posibles están explicadas en `assets/js/defaults.js`.
+
+Tus videos, canciones e imágenes van en `assets/media/`.
+
+### Estado de Discord en vivo
+1. Únete al servidor de Lanyard: https://discord.gg/lanyard
+2. En Discord: Ajustes → Avanzado → activa *Modo desarrollador*. Luego clic derecho en tu perfil → *Copiar ID de usuario*.
+3. Pega el ID en `discord.userId`.
+
+## Publicarlo gratis (GitHub Pages)
+
+1. Sube los cambios a la rama `main` del repositorio.
+2. En GitHub: **Settings → Pages → Build and deployment → Source: Deploy from a branch**, rama `main`, carpeta `/ (root)`.
+3. En 1–2 minutos tu perfil estará en `https://<tu-usuario>.github.io/Personal-Profile/`.
+4. Pon ese enlace en la bio de Discord, TikTok, Instagram, etc. (Opcional: un dominio propio en *Settings → Pages → Custom domain*).
+
+> ¿Quieres una URL más corta como `joakovrd.github.io`? Crea un repositorio llamado exactamente `<tu-usuario>.github.io` y sube estos archivos ahí.
+
+## Probarlo en tu computadora
+
+Por las rutas relativas y el editor, usa un servidor local en vez de abrir el archivo con doble clic:
+
+```bash
+python3 -m http.server 8000
+# luego abre http://localhost:8000 y http://localhost:8000/editor.html
+```
+
+## Estructura
+
+```
+index.html            página del perfil
+editor.html           editor visual con vista previa
+config.js             ← TU configuración
+assets/js/defaults.js todas las opciones y sus valores por defecto
+assets/js/profile.js  lógica del perfil (música, Discord, visitas, tilt…)
+assets/js/effects.js  partículas, cursor, destellos, título animado
+assets/js/icons.js    íconos de marcas (Simple Icons, CC0)
+assets/css/           estilos
+assets/media/         tus videos, canciones e imágenes
+```
+
+## Créditos
+Íconos de marcas: [Simple Icons](https://simpleicons.org) (CC0). Presencia de Discord: [Lanyard](https://github.com/Phineas/lanyard). Contador: [CounterAPI](https://counterapi.dev).
