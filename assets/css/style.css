@@ -97,7 +97,7 @@ a { color: inherit; }
   opacity: 0; transition: opacity 0.3s;
 }
 .card:hover .card-shine { opacity: 1; }
-.layout-minimal .card::before { display: none; }
+.layout-minimal .card::before, .layout-minimal .card-shine { display: none; }
 .layout-minimal .card { background: transparent; border: 0; box-shadow: none; backdrop-filter: none; -webkit-backdrop-filter: none; }
 
 .enter-anim-fade-up .card { animation: fade-up 0.9s cubic-bezier(.2, .8, .2, 1) both; }
