@@ -8,6 +8,7 @@
 
   // Los blob: de archivos elegidos en una sesión anterior ya no existen.
   const media = {};
+  const files = {}; // archivos elegidos con "Subir" que aún no están en el repositorio
   try { localStorage.removeItem(MEDIA); } catch (e) { /* noop */ }
 
   let state;
@@ -255,6 +256,7 @@
     clearTimeout(timer);
     timer = setTimeout(() => frame.contentWindow.location.reload(), 350);
     renderFiles();
+    updateDirty();
   }
 
   /* --------------------------------------------------------------------- campos */
@@ -383,6 +385,7 @@
           if (!file) return;
           const path = "assets/media/" + file.name.replace(/[^\w.-]+/g, "-");
           media[path] = URL.createObjectURL(file);
+          files[path] = file;
           t.value = path;
           commit(path);
         };
@@ -487,14 +490,16 @@
     "/* Generado con editor.html — súbelo a la raíz del repositorio reemplazando config.js */\n" +
     "window.PROFILE = " + JSON.stringify(state, null, 2) + ";\n";
 
+  const pendingFiles = () => Object.keys(files).filter((p) => JSON.stringify(state).includes(JSON.stringify(p)));
+
   function renderFiles() {
-    const used = Object.keys(media).filter((p) => JSON.stringify(state).includes(JSON.stringify(p)));
+    const used = pendingFiles();
     const box = $("files");
     box.hidden = !used.length;
     box.replaceChildren();
     if (!used.length) return;
     const s = document.createElement("strong");
-    s.textContent = "⚠ Recuerda subir estos archivos a tu repositorio:";
+    s.textContent = "📁 Se subirán a tu repositorio al pulsar Guardar:";
     box.appendChild(s);
     for (const p of used) {
       const d = document.createElement("div");
@@ -548,6 +553,125 @@
     render();
     save();
   };
+
+  /* ---------------------------------------------------- guardar y publicar en GitHub */
+  const CONN = "profile-editor-github";
+  const TOKEN = "profile-editor-token";
+  const store = (fn) => { try { return fn(); } catch (e) { return null; } };
+  // Lo publicado es lo que trae config.js; si el estado difiere, hay cambios sin guardar.
+  let published = (() => {
+    const s = state;
+    state = window.deepMerge(window.PROFILE_DEFAULTS, window.PROFILE || {});
+    normalize();
+    const json = JSON.stringify(state);
+    state = s;
+    return json;
+  })();
+
+  function updateDirty() {
+    const dirty = JSON.stringify(state) !== published || pendingFiles().length > 0;
+    $("dirty").hidden = !dirty;
+  }
+
+  function loadConn() {
+    const saved = store(() => JSON.parse(localStorage.getItem(CONN) || "null")) || {};
+    const guess = window.GitHubPublish.detectRepo();
+    return {
+      owner: saved.owner || guess.owner,
+      repo: saved.repo || guess.repo,
+      branch: saved.branch || "main",
+      token: store(() => sessionStorage.getItem(TOKEN)) || store(() => localStorage.getItem(TOKEN)) || "",
+    };
+  }
+  function forgetToken() {
+    store(() => localStorage.removeItem(TOKEN));
+    store(() => sessionStorage.removeItem(TOKEN));
+  }
+
+  const dialog = $("gh-dialog");
+  function openConnection() {
+    const c = loadConn();
+    $("gh-owner").value = c.owner;
+    $("gh-repo").value = c.repo;
+    $("gh-branch").value = c.branch;
+    $("gh-token").value = c.token;
+    dialog.returnValue = "";
+    dialog.showModal();
+    return new Promise((resolve) => {
+      dialog.addEventListener("close", () => {
+        if (dialog.returnValue !== "ok") return resolve(false);
+        const conn = { owner: $("gh-owner").value.trim(), repo: $("gh-repo").value.trim(), branch: $("gh-branch").value.trim() || "main" };
+        const token = $("gh-token").value.trim();
+        store(() => localStorage.setItem(CONN, JSON.stringify(conn)));
+        forgetToken();
+        store(() => ($("gh-remember").checked ? localStorage : sessionStorage).setItem(TOKEN, token));
+        toast("Conexión guardada");
+        resolve(true);
+      }, { once: true });
+    });
+  }
+  $("gh-forget").onclick = () => {
+    forgetToken();
+    $("gh-token").value = "";
+    toast("Token olvidado en este navegador");
+  };
+  $("gh-settings").onclick = () => openConnection();
+
+  function status(msg, kind, link) {
+    const box = $("publish-status");
+    box.hidden = false;
+    box.className = "publish-status" + (kind ? " " + kind : "");
+    box.textContent = msg;
+    if (link) {
+      const a = document.createElement("a");
+      a.href = link; a.target = "_blank"; a.rel = "noopener"; a.textContent = "Ver cambio ↗";
+      box.append(" ", a);
+    }
+  }
+
+  const MAX_FILE = 95 * 1024 * 1024; // GitHub no acepta archivos de más de 100 MB
+  let busy = false;
+  async function publish() {
+    if (busy) return;
+    let conn = loadConn();
+    if (!conn.token || !conn.owner || !conn.repo) {
+      if (!(await openConnection())) return;
+      conn = loadConn();
+    }
+    const pending = pendingFiles();
+    const big = pending.find((p) => files[p].size > MAX_FILE);
+    if (big) return status(`“${big.split("/").pop()}” pesa más de 95 MB; GitHub no lo acepta. Comprímelo e inténtalo de nuevo.`, "err");
+
+    busy = true;
+    $("publish").disabled = true;
+    try {
+      const url = await window.GitHubPublish.commitFiles({
+        ...conn,
+        message: "Actualizar perfil desde el editor",
+        files: [{ path: "config.js", text: code() }, ...pending.map((p) => ({ path: p, file: files[p] }))],
+        onStep: (m) => status(m),
+      });
+      published = JSON.stringify(state);
+      pending.forEach((p) => delete files[p]);
+      status("✓ Guardado. Tu perfil se actualiza en 1–2 minutos.", "ok", url);
+      toast("Guardado y publicado");
+    } catch (err) {
+      if (err.status === 401) forgetToken();
+      status("✕ " + (err.message || "No se pudo conectar con GitHub."), "err");
+    } finally {
+      busy = false;
+      $("publish").disabled = false;
+      renderFiles();
+      updateDirty();
+    }
+  }
+  $("publish").onclick = publish;
+  addEventListener("keydown", (e) => {
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "s") { e.preventDefault(); publish(); }
+  });
+  addEventListener("beforeunload", (e) => {
+    if (pendingFiles().length) { e.preventDefault(); e.returnValue = ""; } // los archivos elegidos se pierden al salir
+  });
 
   document.querySelectorAll(".seg button").forEach((b) =>
     b.addEventListener("click", () => {
