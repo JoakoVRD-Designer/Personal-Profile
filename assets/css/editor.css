@@ -52,6 +52,13 @@ input[type="color"] { width: 42px; height: 36px; padding: 2px; border-radius: 9p
 .item-tools { display: flex; gap: 4px; }
 .item-tools button, .mini { border: 1px solid var(--line); background: var(--field); border-radius: 8px; padding: 4px 9px; cursor: pointer; }
 .item-tools button:hover, .mini:hover { border-color: var(--accent); }
+.mini.on { border-color: var(--accent); color: var(--text); background: color-mix(in srgb, var(--accent) 25%, var(--field)); }
+.themes-wrap { padding: 14px 8px 16px; border-bottom: 1px solid var(--line); display: grid; gap: 10px; }
+.themes-wrap > span { font-weight: 600; }
+.themes { display: flex; flex-wrap: wrap; gap: 6px; }
+.theme { display: inline-flex; align-items: center; gap: 7px; padding: 6px 11px 6px 7px; border-radius: 999px; border: 1px solid var(--line); background: var(--field); cursor: pointer; font-size: 13px; transition: border-color 0.2s, transform 0.2s; }
+.theme:hover { border-color: var(--a); transform: translateY(-1px); }
+.theme .sw { width: 16px; height: 16px; border-radius: 50%; background: linear-gradient(135deg, var(--a), var(--b)); }
 .add { border: 1px dashed var(--line); background: none; border-radius: 12px; padding: 10px; cursor: pointer; color: var(--muted); }
 .add:hover { border-color: var(--accent); color: var(--text); }
 

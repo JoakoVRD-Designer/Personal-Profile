@@ -54,6 +54,7 @@
           <div class="player-info">
             <span id="player-title" class="player-title"></span>
             <span id="player-artist" class="player-artist"></span>
+            <span class="eq" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
           </div>
           <div class="player-bar">
             <span id="player-cur" class="player-time">0:00</span>
@@ -74,6 +75,10 @@
     <button id="volume-btn" type="button" aria-label="Silenciar"><svg viewBox="0 0 24 24"><path id="volume-icon" d=""/></svg></button>
     <input id="volume-range" type="range" min="0" max="1" step="0.01" aria-label="Volumen" />
   </div>
+
+  <button id="share" class="share" type="button" aria-label="Copiar enlace del perfil" title="Compartir" hidden>
+    <svg viewBox="0 0 24 24"><path d="M18 16a3 3 0 0 0-2.4 1.2l-6.7-3.4a3 3 0 0 0 0-1.6l6.7-3.4A3 3 0 1 0 15 7c0 .3 0 .5.1.8L8.4 11.2a3 3 0 1 0 0 3.6l6.7 3.4-.1.8a3 3 0 1 0 3-3z"/></svg>
+  </button>
 
   <canvas id="cursor-fx" class="fx-layer fx-top" aria-hidden="true"></canvas>
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
