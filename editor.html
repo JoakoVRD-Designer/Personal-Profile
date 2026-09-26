@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Editor de perfil</title>
+  <meta name="robots" content="noindex" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><text y='20' font-size='20'>✦</text></svg>" />
+  <link rel="stylesheet" href="assets/css/editor.css" />
+  <script src="assets/js/defaults.js"></script>
+  <script src="assets/js/icons.js"></script>
+  <script src="config.js"></script>
+</head>
+<body>
+  <aside class="side">
+    <header class="side-head">
+      <div>
+        <h1>✦ Editor de perfil</h1>
+        <p>Todo gratis. Los cambios se ven al instante →</p>
+      </div>
+    </header>
+
+    <form id="form" class="form" autocomplete="off" onsubmit="return false"></form>
+
+    <footer class="side-foot">
+      <div id="files" class="files" hidden></div>
+      <div class="actions">
+        <button id="download" type="button" class="primary">Descargar config.js</button>
+        <button id="copy" type="button">Copiar</button>
+        <label class="btn-like">Importar<input id="import" type="file" accept=".js,.json" hidden /></label>
+        <button id="reset" type="button" class="ghost" title="Descarta los cambios del editor y vuelve a config.js">Restablecer</button>
+      </div>
+    </footer>
+  </aside>
+
+  <main class="preview">
+    <div class="preview-bar">
+      <div class="seg" role="group" aria-label="Tamaño de vista previa">
+        <button type="button" data-size="desktop" class="on">Escritorio</button>
+        <button type="button" data-size="mobile">Móvil</button>
+      </div>
+      <a href="index.html" target="_blank" rel="noopener">Abrir perfil publicado ↗</a>
+    </div>
+    <div class="frame-wrap"><iframe id="frame" title="Vista previa del perfil" src="index.html?preview=1"></iframe></div>
+  </main>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script src="assets/js/editor.js"></script>
+</body>
+</html>
