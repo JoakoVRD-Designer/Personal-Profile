@@ -18,7 +18,9 @@ Página de perfil al estilo **guns.lol**, con **todas las funciones premium grat
 | 👤 Avatar / logo | **Foto, GIF animado o video**; anillo degradado giratorio, pulso o flotar; decoración superpuesta; forma círculo/redondeada/cuadrada |
 | 💫 Íconos animados | Estilo cristal/círculo/sin fondo; animación en reposo (flotar, pulso, saludo, girar); al pasar el mouse (elevar, agrandar, rotar, sacudir, voltear); aparición uno por uno; onda al hacer clic; se colorean con su color de marca |
 | 🖍️ Colores de texto | Color del nombre, de la bio y **de la selección de texto**; barra de scroll a juego |
-| 🎭 Temas rápidos | Neón, Hacker, Sakura, Océano, Atardecer, Retro y Minimal con un clic en el editor |
+| 💻 Perfil de desarrollador | **Stack** con 80+ íconos de tecnologías (JavaScript, Python, React, Node, Figma…), **proyectos y estadísticas de GitHub en vivo** (repos, seguidores, estrellas, lenguaje de cada proyecto), bio estilo terminal (`> `) y fondo **Matrix** |
+| ◻️ Estilo sobrio | Modo `clean` sin brillos ni colores, con la fuente del sistema (`font: "system"`, San Francisco en iPhone/Mac) |
+| 🎭 Temas rápidos | Simple, Developer, Neón, Hacker, Sakura, Océano, Atardecer, Retro y Minimal con un clic en el editor |
 | 🌠 Parallax | El fondo se mueve suavemente con el mouse |
 | 📤 Compartir | Botón para copiar el enlace del perfil (o compartir en móvil) |
 | 🔤 Fuentes | Cualquier fuente de Google Fonts |
