@@ -28,12 +28,15 @@ Página de perfil al estilo **guns.lol**, con **todas las funciones premium grat
 | 🟣 Discord en vivo | Estado, juego, Spotify con barra de progreso y avatar (vía [Lanyard](https://github.com/Phineas/lanyard)) |
 | 👁️ Visitas | Contador de visitas gratuito |
 | 🏷️ Pestaña | Título animado (máquina de escribir o desplazamiento), favicon, vista previa al compartir |
-| 🛠️ Editor visual | `editor.html`: edita todo con vista previa en vivo y descarga tu `config.js` |
+| 🛠️ Editor visual | `editor.html`: edita todo con vista previa en vivo y **guarda y publica con un botón** (o descarga tu `config.js`) |
 
 ## Cómo personalizarlo
 
-**Opción A — Editor visual:** abre `editor.html` (en tu sitio publicado o en local), cambia lo que quieras y pulsa **Descargar config.js**. Reemplaza el `config.js` del repositorio por el descargado.
-Si en el editor usas “Subir” para un archivo, recuerda copiar ese archivo a `assets/media/` (el editor te muestra la lista).
+**Opción A — Editor visual (recomendada):** abre `https://<tu-usuario>.github.io/Personal-Profile/editor.html`, cambia lo que quieras y pulsa **💾 Guardar y publicar** (o `Ctrl + S`). Tu perfil se actualiza solo en 1–2 minutos.
+- La primera vez te pedirá un **token de GitHub** (se crea una sola vez, el editor explica los pasos): en [github.com/settings/personal-access-tokens/new](https://github.com/settings/personal-access-tokens/new) → *Only select repositories* → este repo → *Contents: Read and write*.
+- Los archivos que elijas con **Subir** (fotos, GIF, videos, canciones) se suben a `assets/media/` en el mismo guardado.
+- El token queda solo en tu navegador y solo se envía a `api.github.com`; el botón ⚙ permite cambiarlo u olvidarlo.
+- El punto amarillo en el botón indica cambios sin guardar.
 
 **Opción B — A mano:** edita `config.js`. Todas las opciones posibles están explicadas en `assets/js/defaults.js`.
 
@@ -61,6 +64,14 @@ En `links` pon la `platform` (ej. `"kick"`, `"onlyfans"`, `"roblox"`, `"twitter"
 4. Pon ese enlace en la bio de Discord, TikTok, Instagram, etc. (Opcional: un dominio propio en *Settings → Pages → Custom domain*).
 
 > ¿Quieres una URL más corta como `joakovrd.github.io`? Crea un repositorio llamado exactamente `<tu-usuario>.github.io` y sube estos archivos ahí.
+
+## ¿Es permanente?
+
+Sí. GitHub Pages es gratis y no vence: el perfil queda en línea mientras exista el repositorio, sin anuncios ni pagos.
+
+¿Quieres una dirección más corta? Opcional:
+- **`https://joakovrd-designer.github.io/`** (sin `/Personal-Profile`): en *Settings → General*, cambia el nombre del repositorio a `JoakoVRD-Designer.github.io`. El editor se adapta solo a la nueva dirección; solo tendrás que actualizar el enlace en tus redes.
+- **Dominio propio** (ej. `joakovrd.com`, de pago en cualquier registrador): *Settings → Pages → Custom domain*.
 
 ## Probarlo en tu computadora
 
