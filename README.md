@@ -7,7 +7,7 @@ Página de perfil al estilo **guns.lol**, con **todas las funciones premium grat
 | | |
 |---|---|
 | 🚪 Pantalla “click to enter” | Texto personalizable; permite que la música suene al entrar |
-| 🖼️ Fondo | Video, imagen/GIF, degradado animado o color; oscurecido y desenfoque |
+| 🖼️ Fondo | **Foto, GIF o video**, o una **presentación** de varios que se turnan con transición y zoom lento; fondo distinto para celular; degradado animado o color; oscurecido y desenfoque |
 | 🎵 Música | **Varias canciones**, reproductor con portada, ecualizador animado, barra de progreso, anterior/siguiente, aleatorio, repetir y control de volumen (recuerda tu volumen) |
 | ⌨️ Atajos | `Espacio`/`K` reproducir-pausar, `N` siguiente, `B` anterior, `M` silenciar |
 | ✨ Efectos del nombre | Destellos, arcoíris, degradado, brillo que pasa, glitch, glow |
@@ -15,7 +15,7 @@ Página de perfil al estilo **guns.lol**, con **todas las funciones premium grat
 | 🖱️ Cursor | Cursor personalizado + rastros: destellos, estela, luz, burbujas, emoji. Efecto al hacer clic |
 | 🌌 Partículas | Estrellas (con estrellas fugaces), nieve, lluvia, luciérnagas, corazones, sakura, burbujas, confeti |
 | 🪟 Tarjeta | Opacidad, desenfoque, color, **borde degradado giratorio**, brillo, **inclinación 3D**, diseño tarjeta o minimal |
-| 👤 Avatar | Anillo degradado giratorio, pulso o flotar; decoración superpuesta; forma círculo/redondeada/cuadrada |
+| 👤 Avatar / logo | **Foto, GIF animado o video**; anillo degradado giratorio, pulso o flotar; decoración superpuesta; forma círculo/redondeada/cuadrada |
 | 💫 Íconos animados | Estilo cristal/círculo/sin fondo; animación en reposo (flotar, pulso, saludo, girar); al pasar el mouse (elevar, agrandar, rotar, sacudir, voltear); aparición uno por uno; onda al hacer clic; se colorean con su color de marca |
 | 🖍️ Colores de texto | Color del nombre, de la bio y **de la selección de texto**; barra de scroll a juego |
 | 🎭 Temas rápidos | Neón, Hacker, Sakura, Océano, Atardecer, Retro y Minimal con un clic en el editor |
@@ -23,7 +23,7 @@ Página de perfil al estilo **guns.lol**, con **todas las funciones premium grat
 | 📤 Compartir | Botón para copiar el enlace del perfil (o compartir en móvil) |
 | 🔤 Fuentes | Cualquier fuente de Google Fonts |
 | 🏅 Insignias | Ilimitadas y personalizadas (emoji, ícono o imagen) con tooltip, destello animado y giro al pasar el mouse |
-| 🔗 Redes | 45+ íconos incluidos, colores de marca o monocromo, brillo; copiar al portapapeles (ej. usuario de Discord) |
+| 🔗 Redes | **Ilimitadas**: 170+ íconos incluidos (Instagram, TikTok, Kick, OnlyFans, Roblox, Steam, Spotify, Twitch…) con buscador en el editor, o cualquier red con tu propio ícono (PNG/SVG/GIF); colores de marca o monocromo; copiar al portapapeles |
 | 🧷 Botones | Enlaces grandes estilo Linktree con título, subtítulo e ícono |
 | 🟣 Discord en vivo | Estado, juego, Spotify con barra de progreso y avatar (vía [Lanyard](https://github.com/Phineas/lanyard)) |
 | 👁️ Visitas | Contador de visitas gratuito |
@@ -38,6 +38,15 @@ Si en el editor usas “Subir” para un archivo, recuerda copiar ese archivo a 
 **Opción B — A mano:** edita `config.js`. Todas las opciones posibles están explicadas en `assets/js/defaults.js`.
 
 Tus videos, canciones e imágenes van en `assets/media/`.
+
+### Fotos, GIF y videos
+- **Fondo:** `background.type: "media"` y `url` con un `.jpg`, `.png`, `.webp`, `.gif`, `.mp4` o `.webm`. Con `mobileUrl` puedes poner otro (por ejemplo, un video vertical) solo para celulares.
+- **Varios fondos:** `background.type: "slideshow"` y `slides: [{ url: "..." }, { url: "..." }]`, que se turnan cada `interval` segundos.
+- **Avatar / logo:** `profile.avatar` acepta foto, GIF animado o video `.mp4`/`.webm`.
+- Para que los videos carguen rápido, usa archivos de menos de ~15 MB. `.mp4` (H.264) funciona en todos los navegadores.
+
+### Redes sociales
+En `links` pon la `platform` (ej. `"kick"`, `"onlyfans"`, `"roblox"`, `"twitter"`…); la lista completa está en el editor. Si tu red no tiene ícono, escribe cualquier nombre y añade `icon: "assets/media/mi-icono.png"`.
 
 ### Estado de Discord en vivo
 1. Únete al servidor de Lanyard: https://discord.gg/lanyard

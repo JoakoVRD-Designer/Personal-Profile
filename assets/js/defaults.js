@@ -17,7 +17,7 @@ window.PROFILE_DEFAULTS = {
   profile: {
     username: "usuario",
     displayName: "",
-    avatar: "",
+    avatar: "", // foto, GIF animado o video (.mp4/.webm)
     avatarDecoration: "", // imagen PNG/GIF transparente que se superpone al avatar
     avatarShape: "circle", // circle | rounded | square
     avatarAnimation: "ring", // none | ring (anillo giratorio) | pulse | float
@@ -63,8 +63,13 @@ window.PROFILE_DEFAULTS = {
   },
 
   background: {
-    type: "gradient", // video | image | gradient | color
-    url: "",
+    type: "gradient", // media (foto, GIF o video) | slideshow (varios) | gradient | color
+    url: "", // para "media": .jpg .png .webp .gif .mp4 .webm…
+    mobileUrl: "", // opcional: otra foto/GIF/video solo para celulares (ej. video vertical)
+    slides: [], // para "slideshow": [{ url: "assets/media/1.jpg" }, { url: "assets/media/2.mp4" }]
+    interval: 8, // segundos entre cada foto/video de la presentación
+    shuffle: false, // orden aleatorio en la presentación
+    kenBurns: true, // zoom lento en las fotos
     color: "#07060b",
     gradient: ["#0f0c29", "#302b63", "#24243e"],
     animatedGradient: true,
