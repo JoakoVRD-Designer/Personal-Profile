@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>perfil</title>
+  <meta name="description" content="" />
+  <meta property="og:type" content="profile" />
+  <meta property="og:title" content="" />
+  <meta property="og:description" content="" />
+  <meta property="og:image" content="" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="theme-color" content="#0a0a0f" />
+  <link rel="icon" id="favicon" href="data:," />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <script src="assets/js/defaults.js"></script>
+  <script src="assets/js/icons.js"></script>
+  <script src="config.js"></script>
+</head>
+<body>
+  <div id="bg" class="bg" aria-hidden="true"></div>
+  <div id="bg-overlay" class="bg-overlay" aria-hidden="true"></div>
+  <canvas id="particles" class="fx-layer" aria-hidden="true"></canvas>
+
+  <button id="enter" class="enter" type="button" hidden>
+    <span id="enter-text" class="enter-text"></span>
+  </button>
+
+  <main id="app" class="app" hidden>
+    <article id="card" class="card">
+      <div class="card-shine" aria-hidden="true"></div>
+
+      <div class="avatar-wrap" id="avatar-wrap">
+        <img id="avatar" class="avatar" alt="" referrerpolicy="no-referrer" />
+        <img id="avatar-deco" class="avatar-deco" alt="" hidden />
+        <span id="status-dot" class="status-dot" hidden></span>
+      </div>
+
+      <h1 id="name" class="name"><span id="name-text"></span></h1>
+      <div id="badges" class="badges"></div>
+      <p id="bio" class="bio"></p>
+
+      <div id="meta" class="meta"></div>
+
+      <section id="discord" class="discord" hidden aria-live="polite"></section>
+      <nav id="buttons" class="buttons" aria-label="Enlaces destacados"></nav>
+      <nav id="links" class="links" aria-label="Redes sociales"></nav>
+
+      <section id="player" class="player" hidden aria-label="Reproductor de música">
+        <img id="player-cover" class="player-cover" alt="" hidden />
+        <div class="player-main">
+          <div class="player-info">
+            <span id="player-title" class="player-title"></span>
+            <span id="player-artist" class="player-artist"></span>
+            <span class="eq" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+          </div>
+          <div class="player-bar">
+            <span id="player-cur" class="player-time">0:00</span>
+            <div id="player-progress" class="player-progress" role="slider" aria-label="Progreso" tabindex="0"><div id="player-fill"></div></div>
+            <span id="player-dur" class="player-time">0:00</span>
+          </div>
+        </div>
+        <div class="player-controls">
+          <button id="player-prev" type="button" aria-label="Anterior"><svg viewBox="0 0 24 24"><path d="M6 6h2v12H6zM9.5 12 18 6v12z"/></svg></button>
+          <button id="player-play" type="button" aria-label="Reproducir"><svg viewBox="0 0 24 24"><path id="player-play-icon" d="M8 5v14l11-7z"/></svg></button>
+          <button id="player-next" type="button" aria-label="Siguiente"><svg viewBox="0 0 24 24"><path d="M16 6h2v12h-2zM6 18l8.5-6L6 6z"/></svg></button>
+        </div>
+      </section>
+    </article>
+  </main>
+
+  <div id="volume" class="volume" hidden>
+    <button id="volume-btn" type="button" aria-label="Silenciar"><svg viewBox="0 0 24 24"><path id="volume-icon" d=""/></svg></button>
+    <input id="volume-range" type="range" min="0" max="1" step="0.01" aria-label="Volumen" />
+  </div>
+
+  <button id="share" class="share" type="button" aria-label="Copiar enlace del perfil" title="Compartir" hidden>
+    <svg viewBox="0 0 24 24"><path d="M18 16a3 3 0 0 0-2.4 1.2l-6.7-3.4a3 3 0 0 0 0-1.6l6.7-3.4A3 3 0 1 0 15 7c0 .3 0 .5.1.8L8.4 11.2a3 3 0 1 0 0 3.6l6.7 3.4-.1.8a3 3 0 1 0 3-3z"/></svg>
+  </button>
+
+  <canvas id="cursor-fx" class="fx-layer fx-top" aria-hidden="true"></canvas>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script src="assets/js/effects.js"></script>
+  <script src="assets/js/profile.js"></script>
+</body>
+</html>
