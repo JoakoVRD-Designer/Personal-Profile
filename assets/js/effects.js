@@ -49,7 +49,32 @@
   }
 
   /* ---------------------------------------------------------------- partículas */
+  const GLYPHS = "アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホ0123456789{}[]<>/=;:+*#$ABCDEF";
+  const glyph = () => GLYPHS[(Math.random() * GLYPHS.length) | 0];
+  const CELL = 16;
+  const matrixDrop = (w, h, init) => {
+    const len = (rand(8, 26)) | 0;
+    return { x: Math.floor(rand(0, w / CELL)) * CELL, y: init ? rand(-h, h) : rand(-300, -20), v: rand(1.5, 4.5), len, chars: Array.from({ length: len }, glyph) };
+  };
   const PARTICLES = {
+    matrix: {
+      spawn: matrixDrop,
+      step: (p, w, h) => {
+        p.y += p.v;
+        if (Math.random() < 0.3) p.chars[(Math.random() * p.len) | 0] = glyph();
+        if (p.y - p.len * CELL > h) Object.assign(p, matrixDrop(w, h, false));
+      },
+      draw: (ctx, p, rgb) => {
+        ctx.font = `${CELL - 2}px ui-monospace, "JetBrains Mono", monospace`;
+        for (let k = 0; k < p.len; k++) {
+          const y = p.y - k * CELL;
+          if (y < -CELL || y > innerHeight + CELL) continue;
+          ctx.fillStyle = k === 0 ? "rgba(255,255,255,0.95)" : `rgba(${rgb},${(1 - k / p.len) * 0.75})`;
+          ctx.fillText(p.chars[k], p.x, y);
+        }
+      },
+      keep: true,
+    },
     snow: {
       spawn: (w, h, init) => ({ x: rand(0, w), y: init ? rand(0, h) : -10, r: rand(1, 3.2), vy: rand(0.4, 1.3), vx: rand(-0.3, 0.3), ph: rand(0, 6.28), a: rand(0.4, 0.95) }),
       step: (p) => { p.ph += 0.01; p.x += p.vx + Math.sin(p.ph) * 0.3; p.y += p.vy; },
