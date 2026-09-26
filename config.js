@@ -1,148 +1,115 @@
-/* Generado con editor.html — súbelo a la raíz del repositorio reemplazando config.js */
+/* =========================================================================
+   CONFIGURACIÓN DE TU PERFIL
+   Edítalo desde /editor.html (botón "Guardar y publicar") o aquí a mano.
+   Todas las opciones posibles están documentadas en assets/js/defaults.js
+   ========================================================================= */
 window.PROFILE = {
-  "meta": {
-    "title": "@joakovrd",
-    "titleAnimation": "typewriter",
-    "description": "JoakoVRD — Designer",
-    "favicon": ""
+  meta: {
+    title: "@joakovrd · dev",
+    titleAnimation: "typewriter",
+    description: "JoakoVRD — developer & designer. Proyectos, stack y contacto.",
   },
-  "enter": {
-    "enabled": true,
-    "text": "click to enter..."
+
+  enter: {
+    enabled: true,
+    text: "> click to enter_",
   },
-  "profile": {
-    "username": "joakovrd",
-    "displayName": "JoakoVRD",
-    "avatar": "https://github.com/JoakoVRD-Designer.png",
-    "avatarDecoration": "",
-    "avatarShape": "circle",
-    "avatarAnimation": "ring",
-    "bio": [
-      "✦ Designer ",
-      "bienvenido a mi perfil",
-      "hecho a mano, sin pagar nada :)"
-    ],
-    "bioEffect": "typewriter",
-    "location": ""
+
+  profile: {
+    username: "joakovrd",
+    displayName: "JoakoVRD",
+    avatar: "https://github.com/JoakoVRD-Designer.png",
+    avatarAnimation: "ring",
+    bioPrefix: "> ",
+    bio: ["developer & designer", "construyendo cosas para la web", "open source ✦ siempre aprendiendo"],
+    bioEffect: "typewriter",
+    location: "",
   },
-  "appearance": {
-    "layout": "minimal",
-    "font": "Poppins",
-    "accentColor": "#a855f7",
-    "secondaryColor": "#ec4899",
-    "textColor": "#ffffff",
-    "nameColor": "",
-    "bioColor": "",
-    "selectionColor": "",
-    "selectionTextColor": "#ffffff",
-    "iconColor": "#ffffff",
-    "cardColor": "#0a0a0f",
-    "cardOpacity": 0.35,
-    "cardBlur": 14,
-    "cardRadius": 22,
-    "cardBorder": true,
-    "cardBorderStyle": "animated",
-    "cardGlow": true,
-    "tilt": true,
-    "tiltStrength": 12,
-    "usernameEffect": "sparkle",
-    "usernameGlow": true,
-    "monochromeIcons": false,
-    "iconGlow": true,
-    "iconSize": 30,
-    "iconStyle": "glass",
-    "iconAnimation": "float",
-    "iconHover": "lift",
-    "iconColorOnHover": true,
-    "badgeAnimation": "shine",
-    "buttonAnimation": "shine",
-    "staggerIn": true,
-    "shareButton": true,
-    "entranceAnimation": "fade-up"
+
+  appearance: {
+    layout: "card",
+    font: "JetBrains Mono",
+    accentColor: "#22d3ee",
+    secondaryColor: "#a78bfa",
+    textColor: "#e6edf3",
+    iconColor: "#e6edf3",
+    cardColor: "#0b1017",
+    cardOpacity: 0.6,
+    cardBlur: 14,
+    cardBorderStyle: "animated",
+    usernameEffect: "shimmer",
+    usernameGlow: true,
+    monochromeIcons: true,
+    iconColorOnHover: true,
+    iconStyle: "glass",
+    iconAnimation: "none",
+    iconHover: "lift",
+    tilt: true,
+    tiltStrength: 6,
   },
-  "background": {
-    "type": "gradient",
-    "url": "",
-    "mobileUrl": "",
-    "slides": [],
-    "interval": 8,
-    "shuffle": false,
-    "kenBurns": true,
-    "color": "#07060b",
-    "gradient": [
-      "#000000",
-      "#000000",
-      "#000000"
-    ],
-    "animatedGradient": true,
-    "overlay": 0.1,
-    "blur": 0,
-    "parallax": true,
-    "videoSound": false
+
+  background: {
+    type: "gradient",
+    gradient: ["#05070a", "#0b1220", "#05070a"],
+    overlay: 0.2,
   },
-  "effects": {
-    "particles": "stars",
-    "particleColor": "#ffffff",
-    "particleCount": 90,
-    "cursor": "",
-    "cursorTrail": "sparkle",
-    "cursorTrailColor": "",
-    "cursorEmoji": "✨",
-    "clickEffect": "burst"
+
+  effects: {
+    particles: "matrix",
+    particleColor: "#22d3ee",
+    particleCount: 60,
+    cursorTrail: "trail",
+    clickEffect: "ripple",
   },
-  "audio": {
-    "tracks": [],
-    "volume": 0.4,
-    "shuffle": false,
-    "loop": true,
-    "showPlayer": true
+
+  audio: {
+    // { title: "Nombre", artist: "Artista", url: "assets/media/cancion.mp3" }
+    tracks: [],
+    volume: 0.4,
   },
-  "discord": {
-    "userId": "",
-    "showPresence": true,
-    "useDiscordAvatar": false,
-    "statusOnAvatar": true
+
+  discord: {
+    // Tu ID de usuario de Discord + unirte a https://discord.gg/lanyard para mostrar tu estado en vivo.
+    userId: "",
   },
-  "views": {
-    "enabled": true,
-    "namespace": "joakovrd-profile"
+
+  views: {
+    enabled: true,
+    namespace: "joakovrd-profile",
   },
-  "badges": [
-    {
-      "name": "Designer",
-      "icon": "🎨",
-      "color": "#a855f7"
-    },
-    {
-      "name": "Premium (gratis)",
-      "icon": "💎",
-      "color": "#38bdf8"
-    },
-    {
-      "name": "Early Supporter",
-      "icon": "⭐",
-      "color": "#facc15"
-    }
+
+  badges: [
+    { name: "Developer", icon: "💻", color: "#22d3ee" },
+    { name: "Designer", icon: "🎨", color: "#a78bfa" },
+    { name: "Open Source", icon: "github", color: "#e6edf3" },
   ],
-  "links": [
-    {
-      "platform": "github",
-      "url": "https://github.com/JoakoVRD-Designer"
-    },
-    {
-      "platform": "discord",
-      "url": "joakovrd",
-      "copy": true,
-      "label": "Copiar usuario de Discord"
-    },
-    {
-      "platform": "instagram",
-      "url": "https://instagram.com/"
-    },
-    {
-      "platform": "tiktok",
-      "url": "https://tiktok.com/"
-    }
+
+  // Añade o quita tecnologías desde el editor (sección "Desarrollador").
+  stackTitle: "Stack",
+  stack: [
+    { name: "HTML", icon: "html5" },
+    { name: "CSS", icon: "css" },
+    { name: "JavaScript", icon: "javascript" },
+    { name: "Git", icon: "git" },
+    { name: "GitHub", icon: "github" },
   ],
-  "buttons": []
+
+  github: {
+    username: "JoakoVRD-Designer",
+    title: "Proyectos",
+    stats: true,
+    repos: 4,
+    sort: "updated",
+  },
+
+  links: [
+    { platform: "github", url: "https://github.com/JoakoVRD-Designer" },
+    { platform: "discord", url: "joakovrd", copy: true, label: "Copiar usuario de Discord" },
+    { platform: "instagram", url: "https://instagram.com/" },
+    { platform: "tiktok", url: "https://tiktok.com/" },
+  ],
+
+  buttons: [
+    { title: "Código de este perfil", subtitle: "Hecho desde cero con HTML, CSS y JavaScript", url: "https://github.com/JoakoVRD-Designer/Personal-Profile", icon: "github" },
+  ],
 };

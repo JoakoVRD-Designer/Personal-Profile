@@ -261,7 +261,13 @@
   const bio = $("bio");
   const lines = (Array.isArray(P.bio) ? P.bio : String(P.bio || "").split("\n")).filter((l) => String(l).trim());
   const typed = P.bioEffect === "typewriter" && lines.length > 0;
-  bio.textContent = typed ? " " : lines.join("\n");
+  // Con prefijo (ej. "> "), el texto va en su propio <span> para que la máquina de escribir no lo borre.
+  let bioText = bio;
+  if (P.bioPrefix) {
+    bioText = el("span");
+    bio.append(el("span", "bio-prefix", P.bioPrefix), bioText);
+  }
+  bioText.textContent = typed ? " " : lines.join("\n");
 
   /* ------------------------------------------------------------------ meta info */
   const meta = $("meta");
@@ -295,6 +301,95 @@
         try { sessionStorage.setItem(seenKey, "1"); } catch (e) { /* noop */ }
       })
       .catch(() => { if (!PREVIEW) wrap.remove(); });
+  }
+
+  /* ------------------------------------------------------------------ stack */
+  if (cfg.stack.length) {
+    $("stack").hidden = false;
+    $("stack-title").textContent = cfg.stackTitle || "Stack";
+    cfg.stack.forEach((t, i) => {
+      const chip = el("span", "chip");
+      chip.style.setProperty("--i", i);
+      // Ícono: el indicado, o el que corresponda al nombre (JavaScript, Python…); si no hay, solo texto.
+      const iconName = t.icon || (ICONS[iconKey(t.name)] ? t.name : "");
+      const ic = iconName ? icon(iconName, { brand: true, fallback: null }) : null;
+      const plainText = ic && ic.classList.contains("emoji") && !/\p{Extended_Pictographic}/u.test(ic.textContent);
+      if (ic && !plainText) {
+        if (ic.style.getPropertyValue("--brand")) chip.style.setProperty("--chip", ic.style.getPropertyValue("--brand"));
+        chip.append(ic);
+      }
+      chip.append(el("span", "", t.name || (ICONS[iconKey(t.icon)] || {}).t || t.icon));
+      $("stack-list").appendChild(chip);
+    });
+  }
+
+  /* ------------------------------------------------- GitHub: proyectos y estadísticas */
+  const G = cfg.github;
+  if (G.username && (G.stats || G.repos > 0)) loadGitHub();
+
+  function loadGitHub() {
+    const user = String(G.username).trim();
+    const cacheKey = "profile-gh:" + user.toLowerCase();
+    const cached = (() => { try { const c = JSON.parse(sessionStorage.getItem(cacheKey)); return c && Date.now() - c.t < 15 * 60e3 ? c : null; } catch (e) { return null; } })();
+    const get = (path) => fetch("https://api.github.com" + path, { headers: { Accept: "application/vnd.github+json" } }).then((r) => (r.ok ? r.json() : Promise.reject(r.status)));
+    const data = cached
+      ? Promise.resolve(cached)
+      : Promise.all([get(`/users/${encodeURIComponent(user)}`), get(`/users/${encodeURIComponent(user)}/repos?per_page=100&sort=updated`)]).then(([u, repos]) => {
+          const slim = {
+            t: Date.now(),
+            u: { login: u.login, html_url: u.html_url, public_repos: u.public_repos, followers: u.followers },
+            repos: repos.map((r) => ({ name: r.name, description: r.description, html_url: r.html_url, homepage: r.homepage, language: r.language, stars: r.stargazers_count, forks: r.forks_count, fork: r.fork, archived: r.archived, pushed: r.pushed_at })),
+          };
+          try { sessionStorage.setItem(cacheKey, JSON.stringify(slim)); } catch (e) { /* noop */ }
+          return slim;
+        });
+    data.then(renderGitHub).catch(() => { /* límite de la API o usuario inexistente: la sección queda oculta */ });
+  }
+
+  const LANG = { JavaScript: "#f1e05a", TypeScript: "#3178c6", Python: "#3572A5", HTML: "#e34c26", CSS: "#563d7c", SCSS: "#c6538c", Java: "#b07219", "C#": "#178600", "C++": "#f34b7d", C: "#555555", Go: "#00ADD8", Rust: "#dea584", PHP: "#4F5D95", Ruby: "#701516", Kotlin: "#A97BFF", Swift: "#F05138", Dart: "#00B4AB", Lua: "#000080", Shell: "#89e051", Vue: "#41b883", Svelte: "#ff3e00", Astro: "#ff5a03", "Jupyter Notebook": "#DA5B0B", GDScript: "#355570" };
+  const STAR = '<svg viewBox="0 0 16 16"><path d="M8 .25a.75.75 0 0 1 .67.42l1.88 3.8 4.2.61a.75.75 0 0 1 .41 1.28l-3.04 2.96.72 4.18a.75.75 0 0 1-1.09.79L8 12.33l-3.75 1.97a.75.75 0 0 1-1.09-.79l.72-4.18L.84 6.37a.75.75 0 0 1 .41-1.28l4.2-.61L7.33.67A.75.75 0 0 1 8 .25z"/></svg>';
+  const FORK = '<svg viewBox="0 0 16 16"><path d="M5 5.37v.25A2.25 2.25 0 0 0 7.25 7.9h1.5A2.25 2.25 0 0 0 11 5.62v-.25a2.25 2.25 0 1 1 1.5 0v.25a3.75 3.75 0 0 1-3.75 3.75h-.75v1.76a2.25 2.25 0 1 1-1.5 0V9.37h-.75A3.75 3.75 0 0 1 3.5 5.62v-.25a2.25 2.25 0 1 1 1.5 0zM5 3.25a.75.75 0 1 0-1.5 0 .75.75 0 0 0 1.5 0zm6.75.75a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5zm-3 8.75a.75.75 0 1 0-1.5 0 .75.75 0 0 0 1.5 0z"/></svg>';
+
+  function renderGitHub(d) {
+    const skip = new Set((G.exclude || []).map((x) => String(x).toLowerCase()));
+    const repos = d.repos
+      .filter((r) => (G.includeForks || !r.fork) && !r.archived && !skip.has(r.name.toLowerCase()) && r.name.toLowerCase() !== d.u.login.toLowerCase())
+      .sort((a, b) => (G.sort === "updated" ? Date.parse(b.pushed) - Date.parse(a.pushed) : b.stars - a.stars || Date.parse(b.pushed) - Date.parse(a.pushed)))
+      .slice(0, Math.max(0, Number(G.repos) || 0));
+    if (!G.stats && !repos.length) return;
+    $("gh").hidden = false;
+    $("gh-title").textContent = G.title || "Proyectos";
+
+    if (G.stats) {
+      const stars = d.repos.filter((r) => !r.fork).reduce((n, r) => n + r.stars, 0);
+      const stat = (value, label) => { const s = el("div", "gh-stat"); s.append(el("strong", "", Number(value || 0).toLocaleString("es")), el("span", "", label)); return s; };
+      const link = el("a", "gh-stat gh-user");
+      link.href = d.u.html_url; link.target = "_blank"; link.rel = "noopener noreferrer";
+      link.append(icon("github"), el("span", "", "@" + d.u.login));
+      $("gh-stats").append(stat(d.u.public_repos, "repos"), stat(d.u.followers, "seguidores"), stat(stars, "estrellas"), link);
+    }
+
+    repos.forEach((r, i) => {
+      const a = el("a", "repo");
+      a.href = r.html_url; a.target = "_blank"; a.rel = "noopener noreferrer";
+      a.style.setProperty("--i", i);
+      const head = el("div", "repo-head");
+      head.append(icon("git"), el("strong", "", r.name));
+      a.append(head);
+      if (r.description) a.append(el("p", "", r.description));
+      const foot = el("div", "repo-foot");
+      if (r.language) {
+        const lang = el("span", "lang", r.language);
+        lang.style.setProperty("--lang", LANG[r.language] || "var(--accent)");
+        foot.append(lang);
+      }
+      const n = (svg, v) => { const s = el("span"); s.innerHTML = svg; s.append(String(v)); return s; };
+      foot.append(n(STAR, r.stars));
+      if (r.forks) foot.append(n(FORK, r.forks));
+      a.append(foot);
+      ripple(a);
+      $("gh-repos").appendChild(a);
+    });
   }
 
   /* ------------------------------------------------------------- botones grandes */
@@ -559,10 +654,10 @@
     app.hidden = false;
     if (A.staggerIn && !FX.reducedMotion()) {
       app.classList.add("stagger");
-      const n = Math.max(cfg.links.length, cfg.badges.length, cfg.buttons.length);
+      const n = Math.max(cfg.links.length, cfg.badges.length, cfg.buttons.length, cfg.stack.length);
       setTimeout(() => app.classList.remove("stagger"), 900 + n * 90);
     }
-    if (typed) FX.typewriter(bio, lines);
+    if (typed) FX.typewriter(bioText, lines);
     if (A.usernameEffect === "sparkle") FX.sparkleText(name);
     if (tracks.length) playAudio();
     if (soundFromVideo) applyVolume();
