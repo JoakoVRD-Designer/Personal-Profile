@@ -32,6 +32,7 @@
       { p: "profile.avatar", label: "Avatar", type: "media", accept: "image/*" },
       { p: "profile.avatarDecoration", label: "Decoración del avatar (PNG/GIF transparente)", type: "media", accept: "image/*" },
       { p: "profile.avatarShape", label: "Forma del avatar", type: "select", options: opt(["circle", "Círculo"], ["rounded", "Redondeado"], ["square", "Cuadrado"]) },
+      { p: "profile.avatarAnimation", label: "Animación del avatar", type: "select", options: opt(["ring", "Anillo giratorio"], ["pulse", "Pulso"], ["float", "Flotar"], ["none", "Ninguna"]) },
       { p: "profile.bio", label: "Bio (una frase por línea)", type: "lines" },
       { p: "profile.bioEffect", label: "Efecto de la bio", type: "select", options: opt(["typewriter", "Máquina de escribir"], ["static", "Estático"]) },
       { p: "profile.location", label: "Ubicación", type: "text" },
@@ -44,6 +45,7 @@
       { p: "background.color", label: "Color sólido", type: "color" },
       { p: "background.overlay", label: "Oscurecer fondo", type: "range", min: 0, max: 1, step: 0.05 },
       { p: "background.blur", label: "Desenfoque del fondo (px)", type: "range", min: 0, max: 30, step: 1 },
+      { p: "background.parallax", label: "Parallax (el fondo sigue al mouse)", type: "check" },
       { p: "background.videoSound", label: "Usar el sonido del video (si no hay canciones)", type: "check" },
     ] },
     { title: "🎨 Apariencia", fields: [
@@ -57,19 +59,39 @@
         { p: "appearance.textColor", label: "Texto", type: "color" },
         { p: "appearance.iconColor", label: "Íconos (monocromo)", type: "color" },
       ] },
+      { row: [
+        { p: "appearance.nameColor", label: "Nombre", type: "color", optional: true },
+        { p: "appearance.bioColor", label: "Bio", type: "color", optional: true },
+      ] },
+      { row: [
+        { p: "appearance.selectionColor", label: "Selección de texto", type: "color", optional: true },
+        { p: "appearance.selectionTextColor", label: "Texto seleccionado", type: "color" },
+      ] },
       { p: "appearance.cardColor", label: "Color de la tarjeta", type: "color" },
       { p: "appearance.cardOpacity", label: "Opacidad de la tarjeta", type: "range", min: 0, max: 1, step: 0.05 },
       { p: "appearance.cardBlur", label: "Desenfoque de la tarjeta (px)", type: "range", min: 0, max: 40, step: 1 },
       { p: "appearance.cardRadius", label: "Bordes redondeados (px)", type: "range", min: 0, max: 40, step: 1 },
       { p: "appearance.cardBorder", label: "Borde de la tarjeta", type: "check" },
+      { p: "appearance.cardBorderStyle", label: "Estilo del borde", type: "select", options: opt(["animated", "Degradado giratorio"], ["solid", "Sólido"]) },
       { p: "appearance.cardGlow", label: "Brillo de la tarjeta", type: "check" },
       { p: "appearance.tilt", label: "Inclinación 3D al pasar el mouse", type: "check" },
       { p: "appearance.tiltStrength", label: "Intensidad 3D", type: "range", min: 2, max: 30, step: 1 },
       { p: "appearance.usernameEffect", label: "Efecto del nombre", type: "select", options: opt(["none", "Ninguno"], ["sparkle", "Destellos ✨"], ["rainbow", "Arcoíris"], ["gradient", "Degradado"], ["shimmer", "Brillo que pasa"], ["glitch", "Glitch"], ["glow", "Solo brillo"]) },
       { p: "appearance.usernameGlow", label: "Brillo en el nombre", type: "check" },
-      { p: "appearance.monochromeIcons", label: "Íconos monocromo (sin colores de marca)", type: "check" },
-      { p: "appearance.iconGlow", label: "Brillo en los íconos", type: "check" },
       { p: "appearance.entranceAnimation", label: "Animación de entrada", type: "select", options: opt(["fade-up", "Subir"], ["zoom", "Zoom"], ["none", "Ninguna"]) },
+    ] },
+    { title: "💫 Íconos y animaciones", fields: [
+      { p: "appearance.iconStyle", label: "Fondo de los íconos", type: "select", options: opt(["glass", "Cristal"], ["circle", "Círculo"], ["plain", "Sin fondo"]) },
+      { p: "appearance.iconAnimation", label: "Animación en reposo", type: "select", options: opt(["float", "Flotar"], ["pulse", "Pulso"], ["wave", "Saludo"], ["spin", "Girar"], ["none", "Ninguna"]) },
+      { p: "appearance.iconHover", label: "Al pasar el mouse", type: "select", options: opt(["lift", "Elevar"], ["grow", "Agrandar"], ["rotate", "Rotar"], ["shake", "Sacudir"], ["flip", "Voltear"]) },
+      { p: "appearance.iconSize", label: "Tamaño de los íconos (px)", type: "range", min: 18, max: 48, step: 1 },
+      { p: "appearance.monochromeIcons", label: "Íconos monocromo (sin colores de marca)", type: "check" },
+      { p: "appearance.iconColorOnHover", label: "Colorear al pasar el mouse", type: "check" },
+      { p: "appearance.iconGlow", label: "Brillo en los íconos", type: "check" },
+      { p: "appearance.badgeAnimation", label: "Animación de insignias", type: "select", options: opt(["shine", "Destello"], ["float", "Flotar"], ["none", "Ninguna"]) },
+      { p: "appearance.buttonAnimation", label: "Animación de botones", type: "select", options: opt(["shine", "Brillo al pasar"], ["none", "Ninguna"]) },
+      { p: "appearance.staggerIn", label: "Aparición uno por uno", type: "check" },
+      { p: "appearance.shareButton", label: "Botón de compartir perfil", type: "check" },
     ] },
     { title: "✨ Efectos y cursor", fields: [
       { p: "effects.particles", label: "Partículas de fondo", type: "select", options: opt(["none", "Ninguna"], ["stars", "Estrellas"], ["snow", "Nieve"], ["rain", "Lluvia"], ["fireflies", "Luciérnagas"], ["hearts", "Corazones"], ["sakura", "Pétalos sakura"], ["bubbles", "Burbujas"], ["confetti", "Confeti"]) },
@@ -139,6 +161,71 @@
     ] },
   ];
 
+  /* ---------------------------------------------------------------- temas rápidos */
+  const THEMES = [
+    { name: "Neón", sw: ["#a855f7", "#ec4899"], cfg: {
+      appearance: { accentColor: "#a855f7", secondaryColor: "#ec4899", textColor: "#ffffff", font: "Poppins", usernameEffect: "sparkle", usernameGlow: true, iconStyle: "glass", iconAnimation: "float", iconHover: "lift", monochromeIcons: false, cardColor: "#0a0a0f", cardOpacity: 0.35, cardBorderStyle: "animated" },
+      profile: { avatarAnimation: "ring" },
+      background: { type: "gradient", gradient: ["#0f0c29", "#302b63", "#24243e"] },
+      effects: { particles: "stars", particleColor: "#ffffff", cursorTrail: "sparkle", clickEffect: "burst" } } },
+    { name: "Hacker", sw: ["#22c55e", "#06b6d4"], cfg: {
+      appearance: { accentColor: "#22c55e", secondaryColor: "#06b6d4", textColor: "#d1fae5", font: "JetBrains Mono", usernameEffect: "glitch", usernameGlow: true, iconStyle: "plain", iconAnimation: "pulse", iconHover: "shake", monochromeIcons: true, iconColor: "#22c55e", cardColor: "#000000", cardOpacity: 0.55, cardBorderStyle: "animated" },
+      profile: { avatarAnimation: "pulse" },
+      background: { type: "gradient", gradient: ["#020617", "#052e16", "#000000"] },
+      effects: { particles: "rain", particleColor: "#22c55e", cursorTrail: "trail", clickEffect: "ripple" } } },
+    { name: "Sakura", sw: ["#f472b6", "#fda4af"], cfg: {
+      appearance: { accentColor: "#f472b6", secondaryColor: "#fda4af", textColor: "#fff1f5", font: "Quicksand", usernameEffect: "gradient", usernameGlow: true, iconStyle: "circle", iconAnimation: "float", iconHover: "grow", monochromeIcons: false, cardColor: "#1a0a12", cardOpacity: 0.4, cardBorderStyle: "animated" },
+      profile: { avatarAnimation: "ring" },
+      background: { type: "gradient", gradient: ["#2a0f1f", "#4a1d34", "#1f1022"] },
+      effects: { particles: "sakura", cursorTrail: "emoji", cursorEmoji: "🌸", clickEffect: "burst" } } },
+    { name: "Océano", sw: ["#38bdf8", "#818cf8"], cfg: {
+      appearance: { accentColor: "#38bdf8", secondaryColor: "#818cf8", textColor: "#f0f9ff", font: "Outfit", usernameEffect: "shimmer", usernameGlow: true, iconStyle: "glass", iconAnimation: "wave", iconHover: "lift", monochromeIcons: false, cardColor: "#06131f", cardOpacity: 0.4, cardBorderStyle: "animated" },
+      profile: { avatarAnimation: "float" },
+      background: { type: "gradient", gradient: ["#0c1a2e", "#0b3a5b", "#07203a"] },
+      effects: { particles: "bubbles", particleColor: "#7dd3fc", cursorTrail: "bubbles", clickEffect: "ripple" } } },
+    { name: "Atardecer", sw: ["#fb923c", "#f43f5e"], cfg: {
+      appearance: { accentColor: "#fb923c", secondaryColor: "#f43f5e", textColor: "#fff7ed", font: "Sora", usernameEffect: "gradient", usernameGlow: true, iconStyle: "glass", iconAnimation: "float", iconHover: "rotate", monochromeIcons: false, cardColor: "#1a0b0b", cardOpacity: 0.35, cardBorderStyle: "animated" },
+      profile: { avatarAnimation: "ring" },
+      background: { type: "gradient", gradient: ["#1a0b12", "#4a1426", "#7c2d12"] },
+      effects: { particles: "fireflies", particleColor: "#fdba74", cursorTrail: "glow", clickEffect: "burst" } } },
+    { name: "Retro", sw: ["#facc15", "#a855f7"], cfg: {
+      appearance: { accentColor: "#facc15", secondaryColor: "#a855f7", textColor: "#ffffff", font: "Silkscreen", usernameEffect: "rainbow", usernameGlow: true, iconStyle: "glass", iconAnimation: "spin", iconHover: "flip", monochromeIcons: false, cardColor: "#120a1f", cardOpacity: 0.45, cardBorderStyle: "animated" },
+      profile: { avatarAnimation: "pulse" },
+      background: { type: "gradient", gradient: ["#1e1b4b", "#581c87", "#0f172a"] },
+      effects: { particles: "confetti", cursorTrail: "sparkle", clickEffect: "burst" } } },
+    { name: "Minimal", sw: ["#e5e5e5", "#525252"], cfg: {
+      appearance: { accentColor: "#e5e5e5", secondaryColor: "#737373", textColor: "#fafafa", font: "Inter", usernameEffect: "none", usernameGlow: false, iconStyle: "plain", iconAnimation: "none", iconHover: "lift", monochromeIcons: true, iconColor: "#fafafa", iconColorOnHover: true, cardColor: "#0a0a0a", cardOpacity: 0.5, cardBorderStyle: "solid" },
+      profile: { avatarAnimation: "none" },
+      background: { type: "gradient", gradient: ["#0a0a0a", "#171717", "#0a0a0a"] },
+      effects: { particles: "snow", particleColor: "#ffffff", cursorTrail: "none", clickEffect: "ripple" } } },
+  ];
+
+  function themes() {
+    const box = document.createElement("div");
+    box.className = "themes";
+    for (const t of THEMES) {
+      const b = document.createElement("button");
+      b.type = "button";
+      b.className = "theme";
+      b.style.setProperty("--a", t.sw[0]);
+      b.style.setProperty("--b", t.sw[1]);
+      b.innerHTML = "<span class='sw'></span>";
+      b.append(t.name);
+      b.onclick = () => {
+        // Un tema solo cambia colores y efectos; tus datos, fondo de video/imagen y enlaces se mantienen.
+        const keepBg = state.background.type === "video" || state.background.type === "image";
+        const cfg = JSON.parse(JSON.stringify(t.cfg));
+        if (keepBg) delete cfg.background.type;
+        state = window.deepMerge(state, cfg);
+        render();
+        save();
+        toast("Tema “" + t.name + "” aplicado");
+      };
+      box.appendChild(b);
+    }
+    return box;
+  }
+
   /* ------------------------------------------------------------- guardar/preview */
   const frame = $("frame");
   let timer;
@@ -207,10 +294,24 @@
         input.onchange = () => commit(Number(input.value));
         break;
       case "color": {
-        input = document.createElement("input");
-        input.type = "color";
-        input.value = /^#[0-9a-f]{6}$/i.test(value || "") ? value : "#ffffff";
-        input.oninput = () => commit(input.value);
+        const c = document.createElement("input");
+        c.type = "color";
+        c.value = /^#[0-9a-f]{6}$/i.test(value || "") ? value : "#ffffff";
+        c.oninput = () => { commit(c.value); if (auto) auto.classList.remove("on"); };
+        input = c;
+        let auto = null;
+        if (def.optional) {
+          // Color opcional: vacío = el valor automático del tema.
+          input = document.createElement("div");
+          input.className = "row";
+          auto = document.createElement("button");
+          auto.type = "button";
+          auto.className = "mini" + (value ? "" : " on");
+          auto.textContent = "auto";
+          auto.title = "Usar el color automático";
+          auto.onclick = () => { commit(""); auto.classList.add("on"); };
+          input.append(c, auto);
+        }
         break;
       }
       case "lines":
@@ -336,6 +437,12 @@
     const form = $("form");
     const open = [...form.querySelectorAll("details")].map((d) => d.open);
     form.replaceChildren();
+    const th = document.createElement("div");
+    th.className = "themes-wrap";
+    const tl = document.createElement("span");
+    tl.textContent = "🎭 Temas rápidos";
+    th.append(tl, themes());
+    form.appendChild(th);
     SECTIONS.forEach((sec, si) => {
       const d = document.createElement("details");
       d.open = open.length ? open[si] : !!sec.open;

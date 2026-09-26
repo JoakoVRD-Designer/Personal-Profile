@@ -8,14 +8,21 @@ Página de perfil al estilo **guns.lol**, con **todas las funciones premium grat
 |---|---|
 | 🚪 Pantalla “click to enter” | Texto personalizable; permite que la música suene al entrar |
 | 🖼️ Fondo | Video, imagen/GIF, degradado animado o color; oscurecido y desenfoque |
-| 🎵 Música | **Varias canciones**, reproductor con portada, barra de progreso, anterior/siguiente, aleatorio, repetir y control de volumen (recuerda tu volumen) |
+| 🎵 Música | **Varias canciones**, reproductor con portada, ecualizador animado, barra de progreso, anterior/siguiente, aleatorio, repetir y control de volumen (recuerda tu volumen) |
+| ⌨️ Atajos | `Espacio`/`K` reproducir-pausar, `N` siguiente, `B` anterior, `M` silenciar |
 | ✨ Efectos del nombre | Destellos, arcoíris, degradado, brillo que pasa, glitch, glow |
 | ⌨️ Bio | Efecto máquina de escribir con varias frases que rotan |
 | 🖱️ Cursor | Cursor personalizado + rastros: destellos, estela, luz, burbujas, emoji. Efecto al hacer clic |
 | 🌌 Partículas | Estrellas (con estrellas fugaces), nieve, lluvia, luciérnagas, corazones, sakura, burbujas, confeti |
-| 🪟 Tarjeta | Opacidad, desenfoque, color, bordes, brillo, **inclinación 3D**, diseño tarjeta o minimal |
+| 🪟 Tarjeta | Opacidad, desenfoque, color, **borde degradado giratorio**, brillo, **inclinación 3D**, diseño tarjeta o minimal |
+| 👤 Avatar | Anillo degradado giratorio, pulso o flotar; decoración superpuesta; forma círculo/redondeada/cuadrada |
+| 💫 Íconos animados | Estilo cristal/círculo/sin fondo; animación en reposo (flotar, pulso, saludo, girar); al pasar el mouse (elevar, agrandar, rotar, sacudir, voltear); aparición uno por uno; onda al hacer clic; se colorean con su color de marca |
+| 🖍️ Colores de texto | Color del nombre, de la bio y **de la selección de texto**; barra de scroll a juego |
+| 🎭 Temas rápidos | Neón, Hacker, Sakura, Océano, Atardecer, Retro y Minimal con un clic en el editor |
+| 🌠 Parallax | El fondo se mueve suavemente con el mouse |
+| 📤 Compartir | Botón para copiar el enlace del perfil (o compartir en móvil) |
 | 🔤 Fuentes | Cualquier fuente de Google Fonts |
-| 🏅 Insignias | Ilimitadas y personalizadas (emoji, ícono o imagen) con tooltip |
+| 🏅 Insignias | Ilimitadas y personalizadas (emoji, ícono o imagen) con tooltip, destello animado y giro al pasar el mouse |
 | 🔗 Redes | 45+ íconos incluidos, colores de marca o monocromo, brillo; copiar al portapapeles (ej. usuario de Discord) |
 | 🧷 Botones | Enlaces grandes estilo Linktree con título, subtítulo e ícono |
 | 🟣 Discord en vivo | Estado, juego, Spotify con barra de progreso y avatar (vía [Lanyard](https://github.com/Phineas/lanyard)) |

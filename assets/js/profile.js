@@ -46,6 +46,22 @@
     clearTimeout(toast.t);
     toast.t = setTimeout(() => t.classList.remove("show"), 1800);
   }
+  function copyText(text, msg) {
+    const done = () => toast(msg || `Copiado: ${text}`);
+    (navigator.clipboard ? navigator.clipboard.writeText(text) : Promise.reject()).then(done, () => {
+      const t = el("textarea"); t.value = text; document.body.appendChild(t); t.select();
+      try { document.execCommand("copy"); done(); } catch (e) { toast(text); }
+      t.remove();
+    });
+  }
+  /** Onda al hacer clic en íconos, insignias y botones. */
+  function ripple(node) {
+    node.addEventListener("pointerdown", () => {
+      const r = el("span", "ripple");
+      node.appendChild(r);
+      setTimeout(() => r.remove(), 650);
+    });
+  }
   const svgMask = (path) => `url("data:image/svg+xml,${encodeURIComponent(`<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='${path}'/></svg>`)}")`;
 
   function luminance(hex) {
@@ -67,7 +83,10 @@
       const i = el("i", "si");
       i.style.setProperty("--mask", svgMask(data.p));
       // Los colores de marca casi negros (GitHub, TikTok, X…) no se verían sobre fondo oscuro.
-      if (brand && luminance(data.c) > 0.12) i.style.setProperty("--c", data.c);
+      if (luminance(data.c) > 0.12) {
+        i.style.setProperty("--brand", data.c);
+        if (brand) i.style.setProperty("--c", data.c);
+      }
       return i;
     }
     if (/[./]/.test(key)) {
@@ -86,6 +105,11 @@
   root.setProperty("--secondary", A.secondaryColor);
   root.setProperty("--text", A.textColor);
   root.setProperty("--icon", A.iconColor);
+  root.setProperty("--icon-size", (Number(A.iconSize) || 30) + "px");
+  if (A.nameColor) root.setProperty("--name", A.nameColor);
+  if (A.bioColor) root.setProperty("--bio", A.bioColor);
+  if (A.selectionColor) root.setProperty("--sel-bg", A.selectionColor);
+  root.setProperty("--sel-fg", A.selectionTextColor || "#ffffff");
   root.setProperty("--card-blur", A.cardBlur + "px");
   root.setProperty("--radius", A.cardRadius + "px");
   {
@@ -109,6 +133,7 @@
   app.classList.add("layout-" + A.layout);
   if (A.entranceAnimation !== "none") app.classList.add("enter-anim-" + A.entranceAnimation);
   card.classList.toggle("bordered", !!A.cardBorder);
+  card.classList.toggle("border-animated", !!A.cardBorder && A.cardBorderStyle === "animated");
   card.classList.toggle("glow", !!A.cardGlow);
   card.addEventListener("animationend", (e) => { if (e.target === card) app.classList.remove("enter-anim-" + A.entranceAnimation); });
 
@@ -156,7 +181,7 @@
   if (P.avatar) avatar.src = src(P.avatar);
   else $("avatar-wrap").hidden = true;
   avatar.alt = "Avatar de " + (P.displayName || P.username);
-  $("avatar-wrap").classList.add("avatar-" + P.avatarShape);
+  $("avatar-wrap").classList.add("avatar-" + P.avatarShape, "avatar-anim-" + (P.avatarAnimation || "none"));
   if (P.avatarDecoration) { $("avatar-deco").src = src(P.avatarDecoration); $("avatar-deco").hidden = false; }
 
   const name = $("name"), nameText = $("name-text");
@@ -169,16 +194,19 @@
 
   /* ------------------------------------------------------------------ insignias */
   const badges = $("badges");
-  for (const b of cfg.badges) {
+  badges.classList.add("badge-anim-" + (A.badgeAnimation || "none"));
+  cfg.badges.forEach((b, i) => {
     const d = el("span", "badge");
     d.tabIndex = 0;
+    d.style.setProperty("--i", i);
     if (b.color) d.style.setProperty("--badge", b.color);
     const ic = icon(b.icon || "⭐", { fallback: null });
     if (ic.classList.contains("si")) ic.className = "bi";
     d.append(ic, el("span", "tip", b.name || ""));
     d.setAttribute("aria-label", b.name || "insignia");
+    ripple(d);
     badges.appendChild(d);
-  }
+  });
 
   /* ------------------------------------------------------------------------ bio */
   const bio = $("bio");
@@ -222,8 +250,10 @@
 
   /* ------------------------------------------------------------- botones grandes */
   const arrow = '<svg class="arrow" viewBox="0 0 24 24"><path d="M9.3 6.7a1 1 0 0 1 1.4-1.4l6 6a1 1 0 0 1 0 1.4l-6 6a1 1 0 1 1-1.4-1.4L14.6 12z"/></svg>';
-  for (const b of cfg.buttons) {
+  $("buttons").classList.toggle("btn-shine", A.buttonAnimation === "shine");
+  cfg.buttons.forEach((b, i) => {
     const a = el("a", "btn");
+    a.style.setProperty("--i", i);
     a.href = href(b.url);
     a.target = "_blank";
     a.rel = "noopener noreferrer";
@@ -233,27 +263,24 @@
     txt.append(el("strong", "", b.title || b.url), ...(b.subtitle ? [el("small", "", b.subtitle)] : []));
     a.append(ic, txt);
     a.insertAdjacentHTML("beforeend", arrow);
+    ripple(a);
     $("buttons").appendChild(a);
-  }
+  });
 
   /* ------------------------------------------------------------- redes sociales */
   const links = $("links");
   links.classList.toggle("icon-glow", !!A.iconGlow);
-  for (const l of cfg.links) {
+  links.classList.toggle("icon-colorhover", !!A.iconColorOnHover);
+  links.classList.add("icon-style-" + A.iconStyle, "icon-anim-" + A.iconAnimation, "icon-hover-" + A.iconHover);
+  cfg.links.forEach((l, i) => {
     const platform = String(l.platform || "link").toLowerCase();
     const isUrl = /^(https?:|mailto:|tel:)/i.test(l.url || "") || /^[\w-]+(\.[\w-]+)+\//.test(l.url || "");
     const copy = l.copy || !isUrl;
     const node = copy ? el("button", "link") : el("a", "link");
+    node.style.setProperty("--i", i);
     if (copy) {
       node.type = "button";
-      node.addEventListener("click", () => {
-        const done = () => toast(`Copiado: ${l.url}`);
-        (navigator.clipboard ? navigator.clipboard.writeText(l.url) : Promise.reject()).then(done, () => {
-          const t = el("textarea"); t.value = l.url; document.body.appendChild(t); t.select();
-          try { document.execCommand("copy"); done(); } catch (e) { toast(l.url); }
-          t.remove();
-        });
-      });
+      node.addEventListener("click", () => copyText(l.url));
     } else {
       node.href = href(l.url);
       node.target = "_blank";
@@ -262,7 +289,28 @@
     const label = l.label || (ICONS[platform] ? ICONS[platform].t : platform);
     node.setAttribute("aria-label", label);
     node.append(icon(l.icon || platform, { brand: !A.monochromeIcons }), el("span", "tip", label));
+    ripple(node);
     links.appendChild(node);
+  });
+
+  /* ------------------------------------------------------ botón de compartir */
+  if (A.shareButton && !PREVIEW) {
+    const share = $("share");
+    share.hidden = false;
+    share.addEventListener("click", () => {
+      const url = location.href.split("#")[0];
+      if (navigator.share && FX.isTouch()) navigator.share({ title: document.title, url }).catch(() => {});
+      else copyText(url, "Enlace del perfil copiado");
+    });
+  }
+
+  /* ---------------------------------------------------------- parallax del fondo */
+  if (B.parallax && !FX.isTouch() && !FX.reducedMotion()) {
+    bg.classList.add("parallax");
+    addEventListener("pointermove", (e) => {
+      const x = e.clientX / innerWidth - 0.5, y = e.clientY / innerHeight - 0.5;
+      bg.style.transform = `translate(${x * -18}px, ${y * -18}px) scale(1.06)`;
+    }, { passive: true });
   }
 
   /* --------------------------------------------------------------------- tilt 3D */
@@ -413,8 +461,8 @@
   if (tracks.length) {
     loadTrack(0);
     $("player").hidden = !AU.showPlayer;
-    audio.addEventListener("play", () => $("player-play-icon").setAttribute("d", PAUSE));
-    audio.addEventListener("pause", () => $("player-play-icon").setAttribute("d", PLAY));
+    audio.addEventListener("play", () => { $("player-play-icon").setAttribute("d", PAUSE); $("player").classList.add("playing"); });
+    audio.addEventListener("pause", () => { $("player-play-icon").setAttribute("d", PLAY); $("player").classList.remove("playing"); });
     audio.addEventListener("loadedmetadata", () => ($("player-dur").textContent = fmtTime(audio.duration)));
     audio.addEventListener("timeupdate", () => {
       $("player-cur").textContent = fmtTime(audio.currentTime);
@@ -447,8 +495,24 @@
   }
 
   /* -------------------------------------------------------- entrada y efectos */
+  /* Atajos: espacio/K reproducir-pausar, N siguiente, B anterior, M silenciar. */
+  addEventListener("keydown", (e) => {
+    if (e.ctrlKey || e.metaKey || e.altKey || /^(INPUT|TEXTAREA|SELECT|BUTTON|A)$/.test(e.target.tagName)) return;
+    if (app.hidden) return; // aún en la pantalla de entrada
+    const k = e.key.toLowerCase();
+    if (tracks.length && (k === " " || k === "k")) { e.preventDefault(); audio.paused ? playAudio() : audio.pause(); }
+    else if (tracks.length > 1 && k === "n") $("player-next").click();
+    else if (tracks.length > 1 && k === "b") $("player-prev").click();
+    else if (k === "m" && !$("volume").hidden) $("volume-btn").click();
+  });
+
   function start() {
     app.hidden = false;
+    if (A.staggerIn && !FX.reducedMotion()) {
+      app.classList.add("stagger");
+      const n = Math.max(cfg.links.length, cfg.badges.length, cfg.buttons.length);
+      setTimeout(() => app.classList.remove("stagger"), 900 + n * 90);
+    }
     if (typed) FX.typewriter(bio, lines);
     if (A.usernameEffect === "sparkle") FX.sparkleText(name);
     if (tracks.length) playAudio();

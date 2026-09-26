@@ -20,6 +20,7 @@ window.PROFILE_DEFAULTS = {
     avatar: "",
     avatarDecoration: "", // imagen PNG/GIF transparente que se superpone al avatar
     avatarShape: "circle", // circle | rounded | square
+    avatarAnimation: "ring", // none | ring (anillo giratorio) | pulse | float
     bio: [],
     bioEffect: "typewriter", // typewriter | static
     location: "",
@@ -31,12 +32,17 @@ window.PROFILE_DEFAULTS = {
     accentColor: "#a855f7",
     secondaryColor: "#ec4899",
     textColor: "#ffffff",
+    nameColor: "", // vacío = color del texto (solo con efectos none/glow/sparkle/glitch)
+    bioColor: "", // vacío = texto atenuado
+    selectionColor: "", // color al seleccionar texto (vacío = acento)
+    selectionTextColor: "#ffffff",
     iconColor: "#ffffff",
     cardColor: "#0a0a0f",
     cardOpacity: 0.35,
     cardBlur: 14,
     cardRadius: 22,
     cardBorder: true,
+    cardBorderStyle: "animated", // solid | animated (borde degradado giratorio)
     cardGlow: true,
     tilt: true,
     tiltStrength: 12,
@@ -44,6 +50,15 @@ window.PROFILE_DEFAULTS = {
     usernameGlow: true,
     monochromeIcons: false,
     iconGlow: true,
+    iconSize: 30,
+    iconStyle: "glass", // plain | glass | circle
+    iconAnimation: "float", // none | float | pulse | wave | spin
+    iconHover: "lift", // lift | grow | rotate | shake | flip
+    iconColorOnHover: true, // con íconos monocromo, se colorean al pasar el mouse
+    badgeAnimation: "shine", // none | shine | float
+    buttonAnimation: "shine", // none | shine
+    staggerIn: true, // íconos e insignias aparecen uno por uno
+    shareButton: true, // botón para copiar el enlace del perfil
     entranceAnimation: "fade-up", // fade-up | zoom | none
   },
 
@@ -55,6 +70,7 @@ window.PROFILE_DEFAULTS = {
     animatedGradient: true,
     overlay: 0.35,
     blur: 0,
+    parallax: true, // el fondo se mueve un poco con el mouse
     videoSound: false, // usa el audio del video (si no hay canciones)
   },
 
