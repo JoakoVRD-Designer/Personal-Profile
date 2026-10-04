@@ -35,7 +35,7 @@
 
   /* ------------------------------------------------------------------- esquema */
   const opt = (...xs) => xs.map((x) => (Array.isArray(x) ? x : [x, x]));
-  const FONTS = ["Poppins", "Inter", "Montserrat", "Outfit", "Space Grotesk", "Sora", "Lexend", "Rubik", "Nunito", "Quicksand", "Comfortaa", "Orbitron", "Audiowide", "Press Start 2P", "VT323", "Silkscreen", "JetBrains Mono", "Fira Code", "Pacifico", "Dancing Script", "Satisfy", "Caveat", "Bebas Neue", "Anton", "Righteous", "Permanent Marker", "Playfair Display", "Cinzel", "UnifrakturMaguntia"];
+  const FONTS = ["system", "Poppins", "Inter", "Montserrat", "Outfit", "Space Grotesk", "Sora", "Lexend", "Rubik", "Nunito", "Quicksand", "Comfortaa", "Orbitron", "Audiowide", "Press Start 2P", "VT323", "Silkscreen", "JetBrains Mono", "Fira Code", "Pacifico", "Dancing Script", "Satisfy", "Caveat", "Bebas Neue", "Anton", "Righteous", "Permanent Marker", "Playfair Display", "Cinzel", "UnifrakturMaguntia"];
 
   const SECTIONS = [
     { title: "👤 Perfil", open: true, fields: [
@@ -47,6 +47,7 @@
       { p: "profile.avatarAnimation", label: "Animación del avatar", type: "select", options: opt(["ring", "Anillo giratorio"], ["pulse", "Pulso"], ["float", "Flotar"], ["none", "Ninguna"]) },
       { p: "profile.bio", label: "Bio (una frase por línea)", type: "lines" },
       { p: "profile.bioEffect", label: "Efecto de la bio", type: "select", options: opt(["typewriter", "Máquina de escribir"], ["static", "Estático"]) },
+      { p: "profile.bioPrefix", label: "Prefijo de la bio (opcional)", type: "text", hint: "Estilo terminal: \"> \" o \"$ \"." },
       { p: "profile.location", label: "Ubicación", type: "text" },
     ] },
     { title: "🖼️ Fondo", fields: [
@@ -69,7 +70,8 @@
     ] },
     { title: "🎨 Apariencia", fields: [
       { p: "appearance.layout", label: "Diseño", type: "select", options: opt(["card", "Tarjeta"], ["minimal", "Minimal (sin tarjeta)"]) },
-      { p: "appearance.font", label: "Fuente (Google Fonts)", type: "text", list: FONTS, hint: "Cualquier nombre de fonts.google.com" },
+      { p: "appearance.style", label: "Estilo", type: "select", options: opt(["vivid", "Vivo (brillos y color)"], ["clean", "Sobrio (sin brillos)"]) },
+      { p: "appearance.font", label: "Fuente", type: "text", list: FONTS, hint: "“system” usa la fuente del dispositivo (San Francisco en iPhone/Mac). O cualquier nombre de fonts.google.com." },
       { row: [
         { p: "appearance.accentColor", label: "Acento", type: "color" },
         { p: "appearance.secondaryColor", label: "Secundario", type: "color" },
@@ -113,7 +115,7 @@
       { p: "appearance.shareButton", label: "Botón de compartir perfil", type: "check" },
     ] },
     { title: "✨ Efectos y cursor", fields: [
-      { p: "effects.particles", label: "Partículas de fondo", type: "select", options: opt(["none", "Ninguna"], ["stars", "Estrellas"], ["snow", "Nieve"], ["rain", "Lluvia"], ["fireflies", "Luciérnagas"], ["hearts", "Corazones"], ["sakura", "Pétalos sakura"], ["bubbles", "Burbujas"], ["confetti", "Confeti"]) },
+      { p: "effects.particles", label: "Partículas de fondo", type: "select", options: opt(["none", "Ninguna"], ["stars", "Estrellas"], ["snow", "Nieve"], ["rain", "Lluvia"], ["fireflies", "Luciérnagas"], ["hearts", "Corazones"], ["sakura", "Pétalos sakura"], ["bubbles", "Burbujas"], ["confetti", "Confeti"], ["matrix", "Código Matrix"]) },
       { row: [
         { p: "effects.particleColor", label: "Color", type: "color" },
         { p: "effects.particleCount", label: "Cantidad", type: "number", min: 0, max: 400 },
@@ -162,6 +164,20 @@
         { p: "color", label: "Color", type: "color" },
       ], blank: { name: "Nueva insignia", icon: "⭐", color: "#a855f7" } },
     ] },
+    { title: "💻 Desarrollador", fields: [
+      { p: "stackTitle", label: "Título del stack", type: "text" },
+      { p: "stack", label: "Tecnologías que usas", type: "list", add: "Añadir tecnología", item: (t) => t.name || iconName(t.icon) || "Tecnología", fields: [
+        { p: "name", label: "Nombre", type: "text" },
+        { p: "icon", label: "Ícono (escribe para buscar: javascript, python, react, figma…)", type: "text", list: ICON_OPTIONS },
+      ], blank: { name: "", icon: "" } },
+      { p: "github.username", label: "Usuario de GitHub (muestra tus proyectos en vivo)", type: "text" },
+      { p: "github.title", label: "Título de la sección", type: "text" },
+      { p: "github.stats", label: "Mostrar estadísticas (repos, seguidores, estrellas)", type: "check" },
+      { p: "github.repos", label: "Cuántos proyectos mostrar", type: "range", min: 0, max: 12, step: 1 },
+      { p: "github.sort", label: "Ordenar proyectos por", type: "select", options: opt(["stars", "Más estrellas"], ["updated", "Actualizados recientemente"]) },
+      { p: "github.includeForks", label: "Incluir forks", type: "check" },
+      { p: "github.exclude", label: "Ocultar repositorios (uno por línea)", type: "lines" },
+    ] },
     { title: "🟣 Discord y visitas", fields: [
       { p: "discord.userId", label: "ID de usuario de Discord", type: "text", hint: "Únete a discord.gg/lanyard para que funcione el estado en vivo." },
       { p: "discord.showPresence", label: "Mostrar actividad (juego, Spotify, estado)", type: "check" },
@@ -182,6 +198,16 @@
 
   /* ---------------------------------------------------------------- temas rápidos */
   const THEMES = [
+    { name: "Simple", sw: ["#f5f5f7", "#1d1d1f"], cfg: {
+      appearance: { style: "clean", layout: "minimal", font: "system", accentColor: "#f5f5f7", secondaryColor: "#86868b", textColor: "#f5f5f7", bioColor: "#86868b", iconColor: "#86868b", usernameEffect: "none", usernameGlow: false, iconStyle: "plain", iconAnimation: "none", iconHover: "lift", iconGlow: false, monochromeIcons: true, iconColorOnHover: false, cardGlow: false, cardBorder: false, tilt: false, badgeAnimation: "none", buttonAnimation: "none", shareButton: false },
+      profile: { avatarAnimation: "none", bioPrefix: "", bioEffect: "static" },
+      background: { type: "color", color: "#000000", parallax: false },
+      effects: { particles: "none", cursorTrail: "none", clickEffect: "none" } } },
+    { name: "Developer", sw: ["#22d3ee", "#a78bfa"], cfg: {
+      appearance: { accentColor: "#22d3ee", secondaryColor: "#a78bfa", textColor: "#e6edf3", font: "JetBrains Mono", layout: "card", usernameEffect: "shimmer", usernameGlow: true, iconStyle: "glass", iconAnimation: "none", iconHover: "lift", monochromeIcons: true, iconColor: "#e6edf3", iconColorOnHover: true, cardColor: "#0b1017", cardOpacity: 0.6, cardBorderStyle: "animated", badgeAnimation: "shine" },
+      profile: { avatarAnimation: "ring", bioPrefix: "> " },
+      background: { type: "gradient", gradient: ["#05070a", "#0b1220", "#05070a"] },
+      effects: { particles: "matrix", particleColor: "#22d3ee", particleCount: 60, cursorTrail: "trail", clickEffect: "ripple" } } },
     { name: "Neón", sw: ["#a855f7", "#ec4899"], cfg: {
       appearance: { accentColor: "#a855f7", secondaryColor: "#ec4899", textColor: "#ffffff", font: "Poppins", usernameEffect: "sparkle", usernameGlow: true, iconStyle: "glass", iconAnimation: "float", iconHover: "lift", monochromeIcons: false, cardColor: "#0a0a0f", cardOpacity: 0.35, cardBorderStyle: "animated" },
       profile: { avatarAnimation: "ring" },

@@ -1,148 +1,82 @@
-/* Generado con editor.html — súbelo a la raíz del repositorio reemplazando config.js */
+/* =========================================================================
+   CONFIGURACIÓN DE TU PERFIL
+   Edítalo desde /editor.html (botón "Guardar y publicar") o aquí a mano.
+   Todas las opciones posibles están documentadas en assets/js/defaults.js
+   ========================================================================= */
 window.PROFILE = {
-  "meta": {
-    "title": "@joakovrd",
-    "titleAnimation": "typewriter",
-    "description": "JoakoVRD — Designer",
-    "favicon": ""
+  meta: {
+    title: "JoakoVRD",
+    titleAnimation: "none",
+    description: "JoakoVRD — Developer & Designer.",
   },
-  "enter": {
-    "enabled": true,
-    "text": "click to enter..."
+
+  enter: {
+    enabled: false,
   },
-  "profile": {
-    "username": "joakovrd",
-    "displayName": "JoakoVRD",
-    "avatar": "https://github.com/JoakoVRD-Designer.png",
-    "avatarDecoration": "",
-    "avatarShape": "circle",
-    "avatarAnimation": "ring",
-    "bio": [
-      "✦ Designer ",
-      "bienvenido a mi perfil",
-      "hecho a mano, sin pagar nada :)"
-    ],
-    "bioEffect": "typewriter",
-    "location": ""
+
+  profile: {
+    username: "joakovrd",
+    displayName: "JoakoVRD",
+    avatar: "", // sube tu foto desde el editor (vacío = tu inicial)
+    avatarAnimation: "none",
+    bio: ["Developer & Designer."],
+    bioEffect: "static",
+    location: "",
   },
-  "appearance": {
-    "layout": "minimal",
-    "font": "Poppins",
-    "accentColor": "#a855f7",
-    "secondaryColor": "#ec4899",
-    "textColor": "#ffffff",
-    "nameColor": "",
-    "bioColor": "",
-    "selectionColor": "",
-    "selectionTextColor": "#ffffff",
-    "iconColor": "#ffffff",
-    "cardColor": "#0a0a0f",
-    "cardOpacity": 0.35,
-    "cardBlur": 14,
-    "cardRadius": 22,
-    "cardBorder": true,
-    "cardBorderStyle": "animated",
-    "cardGlow": true,
-    "tilt": true,
-    "tiltStrength": 12,
-    "usernameEffect": "sparkle",
-    "usernameGlow": true,
-    "monochromeIcons": false,
-    "iconGlow": true,
-    "iconSize": 30,
-    "iconStyle": "glass",
-    "iconAnimation": "float",
-    "iconHover": "lift",
-    "iconColorOnHover": true,
-    "badgeAnimation": "shine",
-    "buttonAnimation": "shine",
-    "staggerIn": true,
-    "shareButton": true,
-    "entranceAnimation": "fade-up"
+
+  appearance: {
+    style: "clean",
+    layout: "minimal",
+    font: "system",
+    accentColor: "#f5f5f7",
+    secondaryColor: "#86868b",
+    textColor: "#f5f5f7",
+    bioColor: "#86868b",
+    iconColor: "#86868b",
+    iconSize: 26,
+    iconStyle: "plain",
+    iconAnimation: "none",
+    iconHover: "lift",
+    iconGlow: false,
+    monochromeIcons: true,
+    iconColorOnHover: false,
+    usernameEffect: "none",
+    usernameGlow: false,
+    cardBorder: false,
+    cardGlow: false,
+    tilt: false,
+    shareButton: false,
+    entranceAnimation: "fade-up",
   },
-  "background": {
-    "type": "gradient",
-    "url": "",
-    "mobileUrl": "",
-    "slides": [],
-    "interval": 8,
-    "shuffle": false,
-    "kenBurns": true,
-    "color": "#07060b",
-    "gradient": [
-      "#000000",
-      "#000000",
-      "#000000"
-    ],
-    "animatedGradient": true,
-    "overlay": 0.1,
-    "blur": 0,
-    "parallax": true,
-    "videoSound": false
+
+  background: {
+    type: "color",
+    color: "#000000",
+    overlay: 0,
+    parallax: false,
   },
-  "effects": {
-    "particles": "stars",
-    "particleColor": "#ffffff",
-    "particleCount": 90,
-    "cursor": "",
-    "cursorTrail": "sparkle",
-    "cursorTrailColor": "",
-    "cursorEmoji": "✨",
-    "clickEffect": "burst"
+
+  effects: {
+    particles: "none",
+    cursorTrail: "none",
+    clickEffect: "none",
   },
-  "audio": {
-    "tracks": [],
-    "volume": 0.4,
-    "shuffle": false,
-    "loop": true,
-    "showPlayer": true
+
+  audio: {
+    tracks: [],
   },
-  "discord": {
-    "userId": "",
-    "showPresence": true,
-    "useDiscordAvatar": false,
-    "statusOnAvatar": true
+
+  discord: {
+    userId: "",
   },
-  "views": {
-    "enabled": true,
-    "namespace": "joakovrd-profile"
+
+  views: {
+    enabled: false,
   },
-  "badges": [
-    {
-      "name": "Designer",
-      "icon": "🎨",
-      "color": "#a855f7"
-    },
-    {
-      "name": "Premium (gratis)",
-      "icon": "💎",
-      "color": "#38bdf8"
-    },
-    {
-      "name": "Early Supporter",
-      "icon": "⭐",
-      "color": "#facc15"
-    }
+
+  links: [
+    { platform: "discord", url: "joakovrd", copy: true, label: "Copiar usuario de Discord" },
+    { platform: "instagram", url: "https://instagram.com/" },
+    { platform: "tiktok", url: "https://tiktok.com/" },
   ],
-  "links": [
-    {
-      "platform": "github",
-      "url": "https://github.com/JoakoVRD-Designer"
-    },
-    {
-      "platform": "discord",
-      "url": "joakovrd",
-      "copy": true,
-      "label": "Copiar usuario de Discord"
-    },
-    {
-      "platform": "instagram",
-      "url": "https://instagram.com/"
-    },
-    {
-      "platform": "tiktok",
-      "url": "https://tiktok.com/"
-    }
-  ],
-  "buttons": []
 };

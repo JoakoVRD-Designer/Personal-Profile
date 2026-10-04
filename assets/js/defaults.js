@@ -23,12 +23,14 @@ window.PROFILE_DEFAULTS = {
     avatarAnimation: "ring", // none | ring (anillo giratorio) | pulse | float
     bio: [],
     bioEffect: "typewriter", // typewriter | static
+    bioPrefix: "", // texto fijo antes de la bio, ej. "> " o "$ " (estilo terminal)
     location: "",
   },
 
   appearance: {
     layout: "card", // card | minimal
-    font: "Poppins", // cualquier fuente de Google Fonts
+    style: "vivid", // vivid (brillos y color) | clean (sobrio, sin brillos)
+    font: "Poppins", // cualquier fuente de Google Fonts, o "system" (San Francisco en Apple, Segoe en Windows)
     accentColor: "#a855f7",
     secondaryColor: "#ec4899",
     textColor: "#ffffff",
@@ -80,7 +82,7 @@ window.PROFILE_DEFAULTS = {
   },
 
   effects: {
-    particles: "stars", // none | snow | rain | stars | fireflies | hearts | confetti | bubbles | sakura
+    particles: "stars", // none | snow | rain | stars | fireflies | hearts | confetti | bubbles | sakura | matrix
     particleColor: "#ffffff",
     particleCount: 90,
     cursor: "", // URL de imagen (.png/.cur, máx. 128×128) para el cursor
@@ -111,6 +113,21 @@ window.PROFILE_DEFAULTS = {
   },
 
   badges: [], // [{ name: "Developer", icon: "💻", color: "#a855f7" }]
+
+  // Tecnologías que usas: se muestran como etiquetas con su ícono.
+  stack: [], // [{ name: "JavaScript", icon: "javascript" }]
+  stackTitle: "Stack",
+
+  // Proyectos y estadísticas de tu GitHub, cargados en vivo.
+  github: {
+    username: "",
+    title: "Proyectos",
+    stats: true, // repositorios, seguidores y estrellas
+    repos: 4, // cuántos proyectos mostrar (0 = ninguno)
+    sort: "stars", // stars | updated
+    includeForks: false,
+    exclude: [], // nombres de repositorios que no quieres mostrar
+  },
   links: [], // [{ platform: "discord", url: "...", label: "", copy: false, icon: "" }]
   buttons: [], // [{ title: "Mi portafolio", subtitle: "", url: "...", icon: "website" }]
 };

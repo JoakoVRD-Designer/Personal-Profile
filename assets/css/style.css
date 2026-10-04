@@ -339,7 +339,7 @@ i.si { display: block; width: 30px; height: 30px; background: var(--c, var(--ico
   border-radius: 50%; border: 2px solid var(--accent); pointer-events: none;
   animation: ripple 0.6s ease-out forwards;
 }
-.btn .ripple { width: 40%; border: 0; background: color-mix(in srgb, var(--accent) 35%, transparent); }
+.btn .ripple, .repo .ripple { width: 40%; border: 0; background: color-mix(in srgb, var(--accent) 35%, transparent); }
 @keyframes ripple { from { scale: 0.4; opacity: 0.9; } to { scale: 1.9; opacity: 0; } }
 
 /* --- insignias */
@@ -429,3 +429,80 @@ i.si { display: block; width: 30px; height: 30px; background: var(--c, var(--ico
 .discord:hover { transform: translateY(-2px); border-color: color-mix(in srgb, var(--accent) 50%, transparent); }
 .meta span { transition: color 0.2s; }
 .meta span:hover { color: var(--text); }
+
+/* ======================================================= perfil de desarrollador */
+.bio-prefix { color: var(--accent); font-weight: 600; margin-right: 2px; }
+
+.section { width: 100%; margin-top: 14px; text-align: left; }
+.section-title {
+  display: flex; align-items: center; gap: 10px; margin: 0 0 10px;
+  font-size: 0.72rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted);
+}
+.section-title::after { content: ""; flex: 1; height: 1px; background: linear-gradient(90deg, var(--line), transparent); }
+
+/* --- stack */
+.stack { display: flex; flex-wrap: wrap; gap: 7px; }
+.chip {
+  --chip: var(--accent);
+  display: inline-flex; align-items: center; gap: 7px; padding: 6px 11px 6px 9px;
+  border-radius: 999px; font-size: 0.8rem; line-height: 1;
+  background: color-mix(in srgb, var(--chip) 10%, rgba(255, 255, 255, 0.03));
+  border: 1px solid color-mix(in srgb, var(--chip) 30%, transparent);
+  transition: transform 0.25s cubic-bezier(.34, 1.56, .64, 1), background 0.25s, box-shadow 0.25s;
+}
+.chip i.si { width: 15px; height: 15px; }
+.chip img { width: 15px; height: 15px; object-fit: contain; }
+.chip:hover { transform: translateY(-2px); background: color-mix(in srgb, var(--chip) 22%, transparent); box-shadow: 0 6px 18px -8px var(--chip); }
+
+/* --- GitHub */
+.gh-stats { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 10px; }
+.gh-stat {
+  display: flex; align-items: baseline; gap: 6px; padding: 8px 12px; border-radius: 12px;
+  background: rgba(255, 255, 255, 0.04); border: 1px solid var(--line); font-size: 0.78rem; color: var(--muted);
+  text-decoration: none;
+}
+.gh-stat strong { color: var(--text); font-size: 1rem; font-variant-numeric: tabular-nums; }
+.gh-user { align-items: center; margin-left: auto; transition: border-color 0.2s, color 0.2s; }
+.gh-user i.si { width: 16px; height: 16px; }
+.gh-user:hover { color: var(--text); border-color: color-mix(in srgb, var(--accent) 55%, transparent); }
+.gh-repos { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 8px; }
+.repo {
+  position: relative; overflow: hidden; display: flex; flex-direction: column; gap: 6px; padding: 12px 13px;
+  border-radius: 14px; text-decoration: none; min-width: 0;
+  background: rgba(255, 255, 255, 0.04); border: 1px solid var(--line);
+  transition: transform 0.25s, border-color 0.25s, background 0.25s, box-shadow 0.25s;
+}
+.repo:hover, .repo:focus-visible {
+  transform: translateY(-3px); outline: none;
+  border-color: color-mix(in srgb, var(--accent) 55%, transparent);
+  background: color-mix(in srgb, var(--accent) 8%, transparent);
+  box-shadow: 0 10px 28px -14px var(--accent);
+}
+.repo-head { display: flex; align-items: center; gap: 8px; min-width: 0; }
+.repo-head i.si { flex: none; width: 15px; height: 15px; background: var(--accent); }
+.repo-head strong { font-size: 0.9rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.repo p { margin: 0; font-size: 0.78rem; color: var(--muted); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.repo-foot { display: flex; align-items: center; gap: 12px; margin-top: auto; font-size: 0.74rem; color: var(--muted); }
+.repo-foot span { display: inline-flex; align-items: center; gap: 4px; }
+.repo-foot svg { width: 13px; height: 13px; fill: currentColor; }
+.lang::before { content: ""; width: 9px; height: 9px; border-radius: 50%; background: var(--lang); }
+.stagger .chip, .stagger .repo { animation: pop-in 0.55s cubic-bezier(.34, 1.56, .64, 1) backwards; animation-delay: calc(0.35s + var(--i, 0) * 0.06s); }
+
+/* ======================================================= estilo "clean" (sobrio) */
+.style-clean .avatar { border: 0; box-shadow: none; }
+.style-clean .name { font-weight: 600; letter-spacing: -0.03em; }
+.style-clean .bio { letter-spacing: -0.01em; }
+.style-clean .badge { background: rgba(255, 255, 255, 0.06); border-color: var(--line); }
+.style-clean .badge:hover { box-shadow: none; }
+.style-clean .badge-anim-shine .badge::before { display: none; }
+.style-clean .link, .style-clean .link:hover { background: none; border-color: transparent; box-shadow: none; }
+.style-clean .links i.si { filter: none; transition: background 0.3s ease, transform 0.3s ease; }
+.style-clean .links .link:hover i.si, .style-clean .links .link:focus-visible i.si { background: var(--text); filter: none; }
+.style-clean .icon-hover-lift .link:hover, .style-clean .icon-hover-lift .link:focus-visible { transform: translateY(-2px); }
+.style-clean .ripple { display: none; }
+.style-clean .tip { background: rgba(40, 40, 42, 0.95); font-size: 12px; border-radius: 7px; }
+.style-clean .btn, .style-clean .chip, .style-clean .repo { background: rgba(255, 255, 255, 0.05); border-color: var(--line); box-shadow: none; }
+.style-clean .enter { background: #000; backdrop-filter: none; }
+.style-clean .enter-text { text-shadow: none; letter-spacing: 0; }
+.style-clean .links { margin-top: 26px; gap: 18px; }
+.style-clean .name { margin-top: 4px; }
